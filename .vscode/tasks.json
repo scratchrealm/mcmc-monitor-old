@@ -1,0 +1,19 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    // The "bash -ic" is needed here so that our ~/.bashrc gets sourced. See: https://github.com/microsoft/vscode/issues/29412
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "start dev client",
+            "type": "shell",
+            "command": "bash -ic ./start_dev_client.sh",
+            "problemMatcher": []
+        },
+        {
+            "label": "start dev server",
+            "type": "shell",
+            "command": "bash -ic ./start_dev_server.sh",
+        }
+    ]
+}

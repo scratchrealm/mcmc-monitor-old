@@ -1,6 +1,4 @@
-import time
 import os
-import numpy as np
 from cmdstanpy import CmdStanModel
 from mcmc_monitor import load_workspace, monitor_stan_run, finalize_monitor_stan_run, TemporaryDirectory
 
@@ -9,7 +7,7 @@ def main():
     thisdir = os.path.dirname(os.path.realpath(__file__))
     model_fname = f'{thisdir}/multi-normal.stan'
 
-    # These are adjustable
+    # These are adjustable`
     rho = 0.95
     N = 300
     iter_warmup = 100
@@ -22,7 +20,7 @@ def main():
 
       # Load the default mcmc-monitor workspace and create a new run
       monitor_workspace = load_workspace()
-      run_id = monitor_workspace.add_run(label='multi_normal_example', metadata={})
+      run_id = monitor_workspace.add_run(label='new-run', metadata={})
       # begin monitoring the output directory for this run
       monitor_stan_run(
         monitor_workspace.get_run(run_id),

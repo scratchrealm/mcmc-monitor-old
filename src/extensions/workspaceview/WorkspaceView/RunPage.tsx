@@ -36,6 +36,7 @@ const RunPage:  FunctionComponent<{workspace: WorkspaceState, runId: string, wor
                         {
                             rvPlugins.map(p => (
                                 <p.component
+                                    key={p.name}
                                     run={run}
                                     iterations={iterations}
                                 />

@@ -26,11 +26,11 @@ const IterationsPlotView: FunctionComponent<RunViewProps> = ({ run, iterations }
         <div>
             {
                 chains.map(chain => (
-                    <Expandable label={`Iterations plot for chain ${chain.chainId}`} unmountOnExit={true}>
+                    <Expandable key={chain.chainId} label={`Iterations plot for chain ${chain.chainId}`} unmountOnExit={true}>
                         <div>
                             <IterationsPlot
                                 iterations={chain.iterations}
-                                paramKey={'theta'}
+                                paramKey={'energy__'}
                                 markerColor={'darkgreen'}
                             />
                             <IterationsPlot

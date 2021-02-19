@@ -1,12 +1,13 @@
 import multiprocessing
 import kachery_p2p as kp
 import os
+from typing import List
 
-def monitor_stan_run(run, output_dir):
+def monitor_stan_run(run: dict, output_dir: str, parameter_keys: List[str]):
     # make sure we can successfully load the run subfeed
     run_subfeed = kp.load_subfeed(run['uri'])
 
-    worker_process =  multiprocessing.Process(target=_start_monitoring, args=(run, output_dir))
+    worker_process =  multiprocessing.Process(target=_start_monitoring, args=(run, output_dir, parameter_keys))
     worker_process.start()
 
 def finalize_monitor_stan_run(output_dir):
@@ -23,8 +24,9 @@ import time
 from typing import Dict, List
 
 class OutputCsvFile:
-    def __init__(self, path, subfeed: kp.Subfeed):
+    def __init__(self, path, subfeed: kp.Subfeed, parameter_keys: List[str]):
         self._path = path
+        self._parameter_keys = parameter_keys
         self._chain_id = _chain_id_from_csv_file_name(path)
         self._subfeed = subfeed
         self._file = open(self._path, 'r')
@@ -60,7 +62,9 @@ class OutputCsvFile:
                 else:
                     parameters = {}
                     for ii, k in enumerate(self._header_fields):
-                        if ii < len(vals): parameters[k] = float(vals[ii])
+                        if ii < len(vals):
+                            if (k in self._parameter_keys):
+                                parameters[k] = float(vals[ii])
                     messages.append({
                         'type': 'iteration',
                         'timestamp': time.time(),
@@ -79,9 +83,10 @@ def _chain_id_from_csv_file_name(path: str):
     return int(path[ind+1:].split('.')[0])
 
 class OutputMonitor:
-    def __init__(self, output_dir: str, subfeed: kp.Subfeed):
+    def __init__(self, output_dir: str, subfeed: kp.Subfeed, parameter_keys: List[str]):
         self._output_dir = output_dir
         self._subfeed = subfeed
+        self._parameter_keys = parameter_keys
         self._output_csv_files: Dict[str, OutputCsvFile] = {}
     def __enter__(self):
         return self
@@ -91,7 +96,8 @@ class OutputMonitor:
     def start_iterating(self, interval=1):
         while True:
             if self.iterate():
-                self.print_status()
+                pass
+                # self.print_status()
             if not os.path.exists(self._output_dir):
                 break
             fname0 = f'{self._output_dir}/finalize_stan_run'
@@ -108,7 +114,7 @@ class OutputMonitor:
         for fname in os.listdir(self._output_dir):
             if fname.endswith('.csv'):
                 if fname not in self._output_csv_files:
-                    self._output_csv_files[fname] = OutputCsvFile(f'{self._output_dir}/{fname}', self._subfeed)
+                    self._output_csv_files[fname] = OutputCsvFile(f'{self._output_dir}/{fname}', self._subfeed, self._parameter_keys)
         something_updated = False
         for fname in list(self._output_csv_files.keys()):
             x = self._output_csv_files[fname]
@@ -123,9 +129,9 @@ class OutputMonitor:
         return something_updated
 
 
-def _start_monitoring(run, output_dir):
+def _start_monitoring(run: dict, output_dir: str, parameter_keys: List[str]):
     # sys.stdout = open('debug_' + str(os.getpid()) + ".out", "a")
     # sys.stderr = open('debugerr_' + str(os.getpid()) + "_error.out", "a")
     run_subfeed = kp.load_subfeed(run['uri'])
-    with OutputMonitor(output_dir, run_subfeed) as m:
+    with OutputMonitor(output_dir, run_subfeed, parameter_keys) as m:
         m.start_iterating(0.1)

@@ -18,14 +18,14 @@ const apiConfig = {
 }
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <LabboxProvider
       extensionContext={extensionContext}
       apiConfig={apiConfig}
     >
       <App />
-    </LabboxProvider>
-  </React.StrictMode>,
+    </LabboxProvider>,
+  // </React.StrictMode>,
   document.getElementById('root')
 );
 

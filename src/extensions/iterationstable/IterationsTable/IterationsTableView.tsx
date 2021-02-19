@@ -26,7 +26,7 @@ const IterationsTableView: FunctionComponent<RunViewProps> = ({ run, iterations 
         <div>
             {
                 chains.map(chain => (
-                    <Expandable label={`Iterations table for chain ${chain.chainId}`} unmountOnExit={true}>
+                    <Expandable key={chain.chainId} label={`Iterations table for chain ${chain.chainId}`} unmountOnExit={true}>
                         <div style={{height: 300, overflow: 'auto'}}>
                             <IterationsTable
                                 iterations={chain.iterations}

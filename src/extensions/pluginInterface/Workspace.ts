@@ -14,7 +14,12 @@ export type AddRunWorkspaceAction = {
     run: WorkspaceMCMCRun
 }
 
-export type WorkspaceAction = AddRunWorkspaceAction
+export type DeleteRunsWorkspaceAction = {
+    type: 'DeleteRuns'
+    runIds: string[]
+}
+
+export type WorkspaceAction = AddRunWorkspaceAction | DeleteRunsWorkspaceAction
 export type WorkspaceDispatch = (a: WorkspaceAction) => void
 
 export const workspaceReducer = (s: WorkspaceState, a: WorkspaceAction): WorkspaceState => {
@@ -22,6 +27,12 @@ export const workspaceReducer = (s: WorkspaceState, a: WorkspaceAction): Workspa
         return {
             ...s,
             runs: [...s.runs, a.run]
+        }
+    }
+    else if (a.type === 'DeleteRuns') {
+        return {
+            ...s,
+            runs: s.runs.filter(r => (!a.runIds.includes(r.runId)))
         }
     }
     else return s

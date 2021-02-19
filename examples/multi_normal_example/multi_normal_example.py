@@ -6,10 +6,10 @@ from mcmc_monitor import load_workspace, monitor_stan_run, finalize_monitor_stan
 
 def main():
     thisdir = os.path.dirname(os.path.realpath(__file__))
-    model_fname = f'{thisdir}/bernoulli.stan'
-    num_draws = 800
-    N = 1000
-    p = 0.1
+    model_fname = f'{thisdir}/multi-normal.stan'
+    rho = 0.94
+    N = 160
+    num_draws = 100
 
     with TemporaryDirectory(remove=False) as tmpdir:
       output_dir = tmpdir + '/output'
@@ -18,7 +18,7 @@ def main():
 
       workspace = load_workspace()
       print(workspace.get_subfeed_uri())
-      run_id = workspace.add_run(label='hello_bernoulli', metadata={})
+      run_id = workspace.add_run(label='multi_normal_example', metadata={})
       monitor_stan_run(workspace.get_run(run_id), output_dir)
 
       # Load the bernoulli model
@@ -26,15 +26,15 @@ def main():
 
       # Sample the posterior distribution conditioned on some data
       with Timer(label='fit', verbose=True):
-          fit = model.sample(data={'N': N, 'y': (np.random.rand(N) < p) * 1}, output_dir=output_dir, iter_sampling=num_draws)
+          fit = model.sample(data={'N': N, 'rho': rho}, output_dir=output_dir, iter_sampling=num_draws)
 
-      # Report the average value of the theta parameter
-      # (this is probably not theoretically correct, just trying to get familiar)
-      with Timer(label='Load draws', verbose=True):
-          draws = fit.draws() # First dimension is the draw index, second is the chain index, and third is the column index
-      print(f'{draws.shape[0]} draws; {draws.shape[1]} chains')
-      theta_draws = draws[:, :, 7] # 7th column is the theta
-      print(np.mean(theta_draws))
+      # # Report the average value of the theta parameter
+      # # (this is probably not theoretically correct, just trying to get familiar)
+      # with Timer(label='Load draws', verbose=True):
+      #     draws = fit.draws() # First dimension is the draw index, second is the chain index, and third is the column index
+      # print(f'{draws.shape[0]} draws; {draws.shape[1]} chains')
+      # theta_draws = draws[:, :, 7] # 7th column is the theta
+      # print(np.mean(theta_draws))
 
       # allow monitoring to finish before removing directory
       finalize_monitor_stan_run(output_dir)

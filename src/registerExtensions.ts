@@ -1,4 +1,7 @@
 // !begin-code-generation!
+import { activate as activatechainstable } from './extensions/chainstable/chainstable'
+import { activate as activateiterationsplot } from './extensions/iterationsplot/iterationsplot'
+import { activate as activateiterationstable } from './extensions/iterationstable/iterationstable'
 import { activate as activatemainwindow } from './extensions/mainwindow/mainwindow'
 // !end-code-generation!
 /*
@@ -15,6 +18,9 @@ const registerExtensions = (context: MMExtensionContext) => {
     // !begin-code-generation!
     activatemainwindow(context)
     activateworkspaceview(context)
+    activatechainstable(context)
+    activateiterationstable(context)
+    activateiterationsplot(context)
     // !end-code-generation!
 }
 

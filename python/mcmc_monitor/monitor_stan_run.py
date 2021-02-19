@@ -1,6 +1,6 @@
 import multiprocessing
 import kachery_p2p as kp
-import sys
+import os
 
 def monitor_stan_run(run, output_dir):
     # make sure we can successfully load the run subfeed
@@ -9,14 +9,23 @@ def monitor_stan_run(run, output_dir):
     worker_process =  multiprocessing.Process(target=_start_monitoring, args=(run, output_dir))
     worker_process.start()
 
+def finalize_monitor_stan_run(output_dir):
+    fname = f'{output_dir}/finalize_stan_run'
+    time.sleep(5)
+    with open(fname, 'w') as f:
+        f.write('Finalizing monitoring of stan run')
+    # wait until file disappears
+    while os.path.exists(fname):
+        time.sleep(1)
 
 import os
 import time
-from typing import Dict
+from typing import Dict, List
 
 class OutputCsvFile:
     def __init__(self, path, subfeed: kp.Subfeed):
         self._path = path
+        self._chain_id = _chain_id_from_csv_file_name(path)
         self._subfeed = subfeed
         self._file = open(self._path, 'r')
         self._num_lines_processed = 0
@@ -30,32 +39,44 @@ class OutputCsvFile:
     def iterate(self):
         lines = self._file.readlines()
         if len(lines) > 0:
-            for line in lines:
-                self._process_line(line)
+            self._process_lines(lines)
             self._num_lines_processed += len(lines)
             return True
         else:
             return False
-    def _process_line(self, line: str):
-        if line.startswith('#'):
-            self._subfeed.append_message({
-                'type': 'comment',
-                'timestamp': time.time(),
-                'text': line
-            })
-            return
-        vals = line.split(',')
-        if self._header_fields is None:
-            self._header_fields = vals
-            return
-        parameters = {}
-        for ii, k in enumerate(self._header_fields):
-            if ii < len(vals): parameters[k] = float(vals[ii])
-        self._subfeed.append_message({
-            'type': 'iteration',
-            'timestamp': time.time(),
-            'parameters': parameters
-        })
+    def _process_lines(self, lines: List[str]):
+        messages = []
+        for line in lines:
+            if line.startswith('#'):
+                messages.append({
+                    'type': 'comment',
+                    'timestamp': time.time(),
+                    'text': line
+                })
+            else:
+                vals = line.strip().split(',')
+                if self._header_fields is None:
+                    self._header_fields = vals
+                else:
+                    parameters = {}
+                    for ii, k in enumerate(self._header_fields):
+                        if ii < len(vals): parameters[k] = float(vals[ii])
+                    messages.append({
+                        'type': 'iteration',
+                        'timestamp': time.time(),
+                        'chainId': self._chain_id,
+                        'parameters': parameters
+                    })
+            if len(messages) > 20:
+                self._subfeed.append_messages(messages)
+                messages = []
+        if len(messages) > 0:
+            self._subfeed.append_messages(messages)
+
+def _chain_id_from_csv_file_name(path: str):
+    # should end with '-<id>.csv'
+    ind = path.rindex('-')
+    return int(path[ind+1:].split('.')[0])
 
 class OutputMonitor:
     def __init__(self, output_dir: str, subfeed: kp.Subfeed):
@@ -69,10 +90,14 @@ class OutputMonitor:
             x.cleanup()
     def start_iterating(self, interval=1):
         while True:
-            if not os.path.exists(self._output_dir):
-                break
             if self.iterate():
                 self.print_status()
+            if not os.path.exists(self._output_dir):
+                break
+            fname0 = f'{self._output_dir}/finalize_stan_run'
+            if os.path.exists(fname0):
+                os.unlink(fname0)
+                break
             time.sleep(interval)
     def print_status(self):
         total_lines_processed = sum([x.num_lines_processed() for x in self._output_csv_files.values()])
@@ -103,4 +128,4 @@ def _start_monitoring(run, output_dir):
     # sys.stderr = open('debugerr_' + str(os.getpid()) + "_error.out", "a")
     run_subfeed = kp.load_subfeed(run['uri'])
     with OutputMonitor(output_dir, run_subfeed) as m:
-        m.start_iterating(0.3)
+        m.start_iterating(0.1)

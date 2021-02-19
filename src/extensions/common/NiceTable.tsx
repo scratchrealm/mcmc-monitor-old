@@ -21,7 +21,8 @@ interface Props {
     editRowLabel?: string,
     selectionMode?: 'none' | 'single' | 'multiple',
     selectedRowKeys?: {[key: string]: boolean},
-    onSelectedRowKeysChanged?: ((keys: string[]) => void)
+    onSelectedRowKeysChanged?: ((keys: string[]) => void),
+    noConfirmDeleteRow?: boolean
 }
 
 const NiceTable: FunctionComponent<Props> = ({
@@ -33,7 +34,8 @@ const NiceTable: FunctionComponent<Props> = ({
     editRowLabel=undefined,
     selectionMode='none', // none, single, multiple
     selectedRowKeys={},
-    onSelectedRowKeysChanged=undefined
+    onSelectedRowKeysChanged=undefined,
+    noConfirmDeleteRow
 }) => {
     const selectedRowKeysObj = useMemo(() => {
         const x: {[key: string]: boolean} = {};
@@ -61,15 +63,20 @@ const NiceTable: FunctionComponent<Props> = ({
             );
         }
     }, [onSelectedRowKeysChanged, selectionMode, selectedRowKeysObj])
-    const handleDeleteRow = useCallback((rowKey: string) => {
-        setConfirmDeleteRowKey(rowKey)
-    }, [])
     const handleConfirmDeleteRow = useCallback((rowKey: string, confirmed: boolean) => {
         if (confirmed) {
             onDeleteRow && onDeleteRow(rowKey)
         }
         setConfirmDeleteRowKey(null)
     }, [onDeleteRow])
+    const handleDeleteRow = useCallback((rowKey: string) => {
+        if (noConfirmDeleteRow) {
+            handleConfirmDeleteRow(rowKey, true)
+        }
+        else {
+            setConfirmDeleteRowKey(rowKey)
+        }
+    }, [noConfirmDeleteRow, handleConfirmDeleteRow])
     const handleEditRow = useCallback((rowKey: string) => {
         onEditRow && onEditRow(rowKey)
     }, [onEditRow])

@@ -2,10 +2,11 @@ import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Hyperlink from '../../common/Hyperlink';
 import NiceTable from '../../common/NiceTable';
 import { WorkspaceRouteDispatch } from '../../pluginInterface';
-import { WorkspaceMCMCRun, WorkspaceState } from '../../pluginInterface/Workspace';
+import { WorkspaceDispatch, WorkspaceMCMCRun, WorkspaceState } from '../../pluginInterface/Workspace';
 
 type Props = {
     workspace: WorkspaceState
+    workspaceDispatch: WorkspaceDispatch
     workspaceRouteDispatch: WorkspaceRouteDispatch
 }
 
@@ -16,11 +17,11 @@ const RunLink: FunctionComponent<{run: WorkspaceMCMCRun, onClick: (run: Workspac
     return <Hyperlink onClick={handleClick}>{run.runLabel}</Hyperlink>
 }
 
-const MainPage: FunctionComponent<Props> = ({workspace, workspaceRouteDispatch}) => {
+const MainPage: FunctionComponent<Props> = ({workspace, workspaceDispatch, workspaceRouteDispatch}) => {
     const handleRunClick = useCallback((run: WorkspaceMCMCRun) => {
         workspaceRouteDispatch({type: 'gotoPage', page: {page: 'run', runId: run.runId}})
     }, [workspaceRouteDispatch])
-    const rows = useMemo(() => (workspace.runs.map(r => ({
+    const rows = useMemo(() => (workspace.runs.slice().reverse().map(r => ({
         key: r.runId,
         columnValues: {
             label: {
@@ -40,11 +41,16 @@ const MainPage: FunctionComponent<Props> = ({workspace, workspaceRouteDispatch})
             label: 'URI'
         }
     ]), [])
+    const handleDeleteRun = useCallback((runId: string) => {
+        workspaceDispatch({type: 'DeleteRuns', runIds: [runId]})
+    }, [workspaceDispatch])
     return (
         <div>
             <NiceTable
                 rows={rows}
                 columns={columns}
+                onDeleteRow={handleDeleteRun}
+                noConfirmDeleteRow={true}
             />
         </div>
     )

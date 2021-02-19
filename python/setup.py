@@ -19,7 +19,7 @@ setuptools.setup(
         'scipy',
         'hither>=0.4.2',
         'kachery-p2p>=0.5.24',
-        'labbox==0.1.9'
+        'labbox==0.1.17'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

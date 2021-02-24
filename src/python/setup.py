@@ -18,6 +18,8 @@ setuptools.setup(
     install_requires=[
         'numpy',
         'scipy',
+        "aiohttp",
+        "aiohttp_cors",
         'labbox==0.1.20'
     ],
     classifiers=[

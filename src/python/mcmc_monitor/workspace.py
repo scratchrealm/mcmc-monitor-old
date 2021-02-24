@@ -1,6 +1,5 @@
 import uuid
 import kachery_p2p as kp
-import spikeextractors as se
 
 class Workspace:
     def __init__(self, *, feed: kp.Feed, workspace_name: str) -> None:

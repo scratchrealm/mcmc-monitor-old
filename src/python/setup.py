@@ -5,7 +5,7 @@ import setuptools
 
 setuptools.setup(
     name='mcmc-monitor',
-    version='0.1.1',
+    version='0.1.2',
     author="Jeremy Magland",
     author_email="jmagland@flatironinstitute.org",
     description="",
@@ -16,6 +16,7 @@ setuptools.setup(
         "bin/mcmc-monitor"
     ],
     install_requires=[
+        'cmdstanpy',
         'numpy',
         'scipy',
         "aiohttp",

@@ -13,13 +13,12 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     include_package_data=True,
     scripts=[
+        "bin/mcmc-monitor"
     ],
     install_requires=[
         'numpy',
         'scipy',
-        'hither>=0.4.2',
-        'kachery-p2p>=0.5.24',
-        'labbox==0.1.18'
+        'labbox==0.1.20'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

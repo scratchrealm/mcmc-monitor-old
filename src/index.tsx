@@ -3,8 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import config from './config.json';
-import { MMPlugin } from './extensions/pluginInterface';
 import './index.css';
+import { MMPlugin } from './python/mcmc_monitor/extensions/pluginInterface';
 import registerExtensions from './registerExtensions';
 import reportWebVitals from './reportWebVitals';
 

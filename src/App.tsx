@@ -1,7 +1,7 @@
 import { usePlugins } from 'labbox';
 import React from 'react';
 import './App.css';
-import { MainWindowPlugin, MMPlugin } from './extensions/pluginInterface';
+import { MainWindowPlugin, MMPlugin } from './python/mcmc_monitor/extensions/pluginInterface';
 
 function App() {
   const plugins = usePlugins<MMPlugin>()

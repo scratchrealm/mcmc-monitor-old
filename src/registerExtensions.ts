@@ -1,8 +1,8 @@
 // !begin-code-generation!
-import { activate as activatechainstable } from './extensions/chainstable/chainstable'
-import { activate as activateiterationsplot } from './extensions/iterationsplot/iterationsplot'
-import { activate as activateiterationstable } from './extensions/iterationstable/iterationstable'
-import { activate as activatemainwindow } from './extensions/mainwindow/mainwindow'
+import { activate as activatechainstable } from './python/mcmc_monitor/extensions/chainstable/chainstable'
+import { activate as activateiterationsplot } from './python/mcmc_monitor/extensions/iterationsplot/iterationsplot'
+import { activate as activateiterationstable } from './python/mcmc_monitor/extensions/iterationstable/iterationstable'
+import { activate as activatemainwindow } from './python/mcmc_monitor/extensions/mainwindow/mainwindow'
 // !end-code-generation!
 /*
 Extensions are automatically detected and added to this file via code generation (see task configured in vscode)
@@ -12,8 +12,8 @@ And they must include an activate() function
 Use the following to also include the extension in the jupyterlab extension:
 // LABBOX-EXTENSION-TAGS: jupyter
 */
-import { MMExtensionContext } from './extensions/pluginInterface'
-import { activate as activateworkspaceview } from './extensions/workspaceview/workspaceview'
+import { MMExtensionContext } from './python/mcmc_monitor/extensions/pluginInterface'
+import { activate as activateworkspaceview } from './python/mcmc_monitor/extensions/workspaceview/workspaceview'
 const registerExtensions = (context: MMExtensionContext) => {
     // !begin-code-generation!
     activatemainwindow(context)

@@ -1,10 +1,12 @@
 # MCMC Monitor
 
-Monitor MCMC runs. This project uses Python, [React](https://reactjs.org/), [kachery-p2p](https://github.com/flatironinstitute/kachery-p2p), and [labbox](https://github.com/flatironinstitute/labbox).
+Browser-based monitoring of MCMC runs.
 
-## Prerequisites and kachery setup
+This project uses [Stan](https://mc-stan.org/), [CmdStan](https://mc-stan.org/users/interfaces/cmdstan), [CmdStanPy](https://github.com/stan-dev/cmdstanpy), [React](https://reactjs.org/), [kachery-p2p](https://github.com/flatironinstitute/kachery-p2p), and [labbox](https://github.com/flatironinstitute/labbox).
 
 Tested on Linux, should also run on macOS and Windows Subsystem for Linux.
+
+## Prerequisites and kachery setup
 
 It is recommended that you start with a fresh conda environment with Python 3.8 or higher. For example:
 
@@ -61,8 +63,8 @@ python examples/multi_normal_example.py
 A few seconds after the sampling begins, a new run should appear in the workspace on the web browser. Click on that to monitor in real time the progress and convergence of the MCMC sampling.
 
 
-## Contact
+## Primary developers
 
-Jeremy Magland or Jeff Soules
+Jeremy Magland and Jeff Soules, Center for Computational Mathematics, Flatiron Institute
 
-Center for Computational Mathematics, Flatiron Institute
+Thanks: Bob Carpenter and Mitzi Morris

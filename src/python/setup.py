@@ -21,7 +21,7 @@ setuptools.setup(
         'scipy',
         "aiohttp",
         "aiohttp_cors",
-        'labbox==0.1.20'
+        'labbox==0.1.21'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

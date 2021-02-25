@@ -62,6 +62,9 @@ python examples/multi_normal_example.py
 
 A few seconds after the sampling begins, a new run should appear in the workspace on the web browser. Click on that to monitor in real time the progress and convergence of the MCMC sampling.
 
+## Developer instructions
+
+See [developer_instructions.md](./doc/developer_instructions.md)
 
 ## Primary developers
 

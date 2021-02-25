@@ -2,4 +2,4 @@
 
 set -ex
 
-PORT=10407 yarn start
+exec yarn install

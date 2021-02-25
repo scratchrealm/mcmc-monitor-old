@@ -5,15 +5,100 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "start dev client",
+            "label": "yarn-install",
             "type": "shell",
-            "command": "bash -ic ./start_dev_client.sh",
-            "problemMatcher": []
+            "command": "bash -ic .vscode/tasks/yarn-install.sh",
+            "presentation": {
+                "clear": true
+            },
+            "detail": "Install the node dependencies (do this once, or whenever the node dependencies have changed)"
         },
         {
-            "label": "start dev server",
+            "label": "yarn-build",
             "type": "shell",
-            "command": "bash -ic ./start_dev_server.sh",
-        }
+            "command": "bash -ic .vscode/tasks/yarn-build.sh",
+            "presentation": {
+                "clear": true
+            },
+            "detail": "Build the node package and copy it to the appropriate location"
+        },
+        {
+            "label": "pip-install-dev",
+            "type": "shell",
+            "command": "bash -ic .vscode/tasks/pip-install-dev.sh",
+            "presentation": {
+                "clear": true
+            },
+            "detail": "Install mcmc-monitor in development mode using `pip install -e .`"
+        },
+        {
+            "label": "Publish PyPI",
+            "type": "shell",
+            "command": "bash -ic .vscode/tasks/publish-pypi.sh",
+            "presentation": {
+                "clear": true
+            },
+            "detail": "Publish package to PyPI"
+        },
+        {
+            "label": "start-client-dev",
+            "type": "shell",
+            "command": "bash -ic .vscode/tasks/start-client-dev.sh",
+            "presentation": {
+                "clear": true
+            },
+            "detail": "Start just the client web server in development mode"
+        },
+        {
+            "label": "start-client-prod",
+            "type": "shell",
+            "command": "bash -ic .vscode/tasks/start-client-prod.sh",
+            "presentation": {
+                "clear": true
+            },
+            "detail": "Start just the client web server in production mode (uses the built .tgz node package)"
+        },
+        {
+            "label": "start-api-websocket",
+            "type": "shell",
+            "command": "bash -ic .vscode/tasks/start-api-websocket.sh",
+            "presentation": {
+                "clear": true
+            },
+            "detail": "Start just the api websocket server"
+        },
+        {
+            "label": "start-api-http",
+            "type": "shell",
+            "command": "bash -ic .vscode/tasks/start-api-http.sh",
+            "presentation": {
+                "clear": true
+            },
+            "detail": "Start just the api http server"
+        },
+        {
+            "label": "START DEV",
+            "type": "shell",
+            "command": "echo \"START DEV\"",
+            "dependsOn": [
+                "start-client-dev",
+                "start-api-websocket",
+                "start-api-http",
+                "_start_dev"
+            ],
+            "presentation": {
+                "clear": true
+            },
+            "detail": "Run all three development server tasks: client-dev, api-websocket, api-http"
+        },
+        {
+            "label": "_start_dev",
+            "type": "shell",
+            "command": "echo 'Starting the client-dev, api-websocket, and api-http tasks...' && sleep 3 && echo 'Point your browser to http://localhost:10407'",
+            "presentation": {
+                "clear": true
+            },
+            "detail": "Used internally"
+        },
     ]
 }

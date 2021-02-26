@@ -2,8 +2,6 @@
 
 Browser-based monitoring of MCMC runs.
 
-This project uses [Stan](https://mc-stan.org/), [CmdStan](https://mc-stan.org/users/interfaces/cmdstan), [CmdStanPy](https://github.com/stan-dev/cmdstanpy), [React](https://reactjs.org/), [kachery-p2p](https://github.com/flatironinstitute/kachery-p2p), and [labbox](https://github.com/flatironinstitute/labbox).
-
 Tested on Linux, should also run on macOS and Windows Subsystem for Linux.
 
 ## Prerequisites and kachery setup
@@ -19,7 +17,10 @@ After activating the new environment (`conda activate mcmc-monitor`), install th
 ```
 conda install -c conda-forge nodejs
 npm install -g serve
-pip install mcmc-monitor
+pip install --upgrade mcmc-monitor
+
+# The following (from the cmdstanpy package) does the work of installing cmdstan
+install_cmdstan
 ```
 
 Choose a directory where temporary kachery files will be stored and set the KACHERY_STORAGE_DIR environment variable:
@@ -31,7 +32,7 @@ export KACHERY_STORAGE_DIR="<your-chosen-tmp-file-directory>"
 Open a new terminal and start a kachery-p2p daemon, selecting a `<node-label>` for display purposes:
 
 ```
-kachery-p2p-daemon --label <node-label>
+kachery-p2p-start-daemon --label <node-label>
 ```
 
 Keep this running. It allows communication between the Python script and the GUI. For more information, see [kachery-p2p](https://github.com/flatironinstitute/kachery-p2p).
@@ -65,6 +66,10 @@ A few seconds after the sampling begins, a new run should appear in the workspac
 ## Developer instructions
 
 See [developer_instructions.md](./doc/developer_instructions.md)
+
+## About
+
+This project uses [Stan](https://mc-stan.org/), [CmdStan](https://mc-stan.org/users/interfaces/cmdstan), [CmdStanPy](https://github.com/stan-dev/cmdstanpy), [React](https://reactjs.org/), [kachery-p2p](https://github.com/flatironinstitute/kachery-p2p), and [labbox](https://github.com/flatironinstitute/labbox).
 
 ## Primary developers
 

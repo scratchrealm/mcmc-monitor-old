@@ -1,6 +1,6 @@
 import { AppBar, Toolbar } from '@material-ui/core';
-import { useSubfeed } from 'labbox';
-import React, { FunctionComponent, useCallback, useReducer } from 'react';
+import { LabboxProviderContext, useSubfeed } from 'labbox';
+import React, { FunctionComponent, useCallback, useContext, useMemo, useReducer } from 'react';
 import { MainWindowProps, useWorkspaceViewPlugins, workspaceRouteReducer } from '../../pluginInterface';
 import { WorkspaceAction, workspaceReducer } from '../../pluginInterface/Workspace';
 import HitherJobMonitorControl from './HitherJobMonitorControl';
@@ -15,7 +15,12 @@ const MainWindow: FunctionComponent<MainWindowProps> = () => {
     const handleWorkspaceSubfeedMessages = useCallback((messages: any[]) => {
         messages.forEach(msg => workspaceDispatch2(msg))
     }, [])
-    const {appendMessages: appendWorkspaceMessages} = useSubfeed({feedUri: 'feed://91e20967e11b30db1894a6f8b42d6437215494cd815d3d9b926bcab90f5924a9', subfeedName: '~7033bedf6c058a2871dc22bda839652c5abe0097', onMessages: handleWorkspaceSubfeedMessages })
+
+    const { serverInfo } = useContext(LabboxProviderContext)
+    const feedUri = serverInfo?.defaultFeedId ? `feed://${serverInfo.defaultFeedId}` : undefined
+    const subfeedName = useMemo(() => ({workspaceName: 'default'}), [])
+
+    const {appendMessages: appendWorkspaceMessages} = useSubfeed({feedUri, subfeedName, onMessages: handleWorkspaceSubfeedMessages })
     const workspaceDispatch = useCallback((a: WorkspaceAction) => {
         appendWorkspaceMessages([a])
     }, [appendWorkspaceMessages])

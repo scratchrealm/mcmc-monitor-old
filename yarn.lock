@@ -7149,7 +7149,7 @@ klona@^2.0.4:
   resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.4.tgz#7bb1e3affb0cb8624547ef7e8f6708ea2e39dfc0"
   integrity sha512-ZRbnvdg/NxqzC7L9Uyqzf4psi1OM4Cuc+sJAkQPjO6XkQIJTNbfK2Rsmbw8fx1p2mkZdp2FZYo2+LwXYY/uwIA==
 
-labbox@0.1.20:
+labbox@^0.1.20:
   version "0.1.20"
   resolved "https://registry.yarnpkg.com/labbox/-/labbox-0.1.20.tgz#10530184a6f25ecfa850003c52070f6b5c33991c"
   integrity sha512-hU0HkWFNoaECOk7YPnBp8AthPLsFqcPKOzhVlj0+XdJi5GYs1hyfpoZDKpZ1kLnn+6ju3QjxPexBP38jBXBHGg==

@@ -1,5 +1,5 @@
 import os
-os.environ['LABBOX_DEFAULT_FEED_NAME'] = 'labbox-hello-default'
+os.environ['LABBOX_DEFAULT_FEED_NAME'] = 'default-mcmc-monitor-feed'
 
 # import hither functions by importing all subdirectories that have a __init__.py
 import importlib

@@ -15,7 +15,7 @@ class KeyboardInterruptHandler(object):
     def __exit__(self, type, value, traceback):
         signal.signal(signal.SIGINT, self.old_handler)
 
-def start_app(*, api_websocket: bool, api_http: bool, client_dev: bool, client_prod: bool):
+def start_app(*, api_websocket: bool=False, api_http: bool=False, client_dev: bool=False, client_prod: bool=False, kachery_daemon_run_opts: Union[None, str]=None):
     thisdir = os.path.dirname(os.path.realpath(__file__))
 
     scripts: List[hi.ShellScript] = []
@@ -57,6 +57,15 @@ def start_app(*, api_websocket: bool, api_http: bool, client_dev: bool, client_p
 
         cd {thisdir}
         exec serve -l 10407 build
+        ''')
+        scripts.append(s)
+    
+    if kachery_daemon_run_opts:
+        s = hi.ShellScript(f'''
+        #!/bin/bash
+
+        cd {thisdir}
+        exec kachery-p2p-start-daemon {kachery_daemon_run_opts}
         ''')
         scripts.append(s)
     

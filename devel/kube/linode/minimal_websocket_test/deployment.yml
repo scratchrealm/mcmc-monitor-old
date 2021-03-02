@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minimal-websocket-test-deployment
+  labels:
+    app: minimal-websocket-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+        app: minimal-websocket-test
+  template:
+    metadata:
+      labels:
+        app: minimal-websocket-test
+    spec:
+      containers:
+      - name: minimal-websocket-test
+        image: magland/minimal-websocket-test:0.1.0
+        imagePullPolicy: Always

@@ -2,4 +2,4 @@
 
 set -ex
 
-exec mcmc-monitor --api-websocket
+exec mcmc-monitor-services --api-websocket

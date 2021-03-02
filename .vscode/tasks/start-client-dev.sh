@@ -2,4 +2,4 @@
 
 set -ex
 
-exec mcmc-monitor --client-dev
+exec mcmc-monitor-services --client-dev

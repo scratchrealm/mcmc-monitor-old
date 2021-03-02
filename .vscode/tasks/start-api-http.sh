@@ -2,4 +2,4 @@
 
 set -ex
 
-exec mcmc-monitor --api-http
+exec mcmc-monitor-services --api-http

@@ -1,24 +1,26 @@
-import { AppBar, Toolbar } from '@material-ui/core';
-import { LabboxProviderContext, useSubfeed } from 'labbox';
-import React, { FunctionComponent, useCallback, useContext, useMemo, useReducer } from 'react';
+import { Modal } from '@material-ui/core';
+import { useSubfeed } from 'labbox';
+import React, { FunctionComponent, useCallback, useMemo, useReducer, useState } from 'react';
 import { MainWindowProps, useWorkspaceViewPlugins, workspaceRouteReducer } from '../../pluginInterface';
+import { parseWorkspaceUri } from '../../pluginInterface/misc';
 import { WorkspaceAction, workspaceReducer } from '../../pluginInterface/Workspace';
-import HitherJobMonitorControl from './HitherJobMonitorControl';
-import logo from './logo.svg';
-import ServerStatusControl from './ServerStatusControl';
+import ApplicationBar from './ApplicationBar';
+import SettingsWindow from './SettingsWindow';
 
-const MainWindow: FunctionComponent<MainWindowProps> = () => {
+const MainWindow: FunctionComponent<MainWindowProps> = ({ workspaceUri }) => {
     const workspaceViewPlugin = useWorkspaceViewPlugins().filter(p => (p.name === 'WorkspaceView'))[0]
     if (!workspaceViewPlugin) throw Error('Unable to find workspace view plugin')
+
+    const [settingsVisible, setSettingsVisible] = useState(false)
 
     const [workspace, workspaceDispatch2] = useReducer(workspaceReducer, {runs: []})
     const handleWorkspaceSubfeedMessages = useCallback((messages: any[]) => {
         messages.forEach(msg => workspaceDispatch2(msg))
     }, [])
 
-    const { serverInfo } = useContext(LabboxProviderContext)
-    const feedUri = serverInfo?.defaultFeedId ? `feed://${serverInfo.defaultFeedId}` : undefined
-    const subfeedName = useMemo(() => ({workspaceName: 'default'}), [])
+    const {feedUri, workspaceName} = parseWorkspaceUri(workspaceUri)
+
+    const subfeedName = useMemo(() => ({workspaceName}), [workspaceName])
 
     const {appendMessages: appendWorkspaceMessages} = useSubfeed({feedUri, subfeedName, onMessages: handleWorkspaceSubfeedMessages })
     const workspaceDispatch = useCallback((a: WorkspaceAction) => {
@@ -27,25 +29,33 @@ const MainWindow: FunctionComponent<MainWindowProps> = () => {
 
     const [workspaceRoute, workspaceRouteDispatch] = useReducer(workspaceRouteReducer, {page: 'main'})
 
-    const appBarHeight = 50
+    const handleOpenSettings = useCallback(() => {
+        setSettingsVisible(true)
+    }, [])
+
+    const handleCloseSettings = useCallback(() => {
+        setSettingsVisible(false)
+    }, [])
 
     return (
         <div style={{margin: 0}}>
-            <AppBar position="static" style={{height: appBarHeight, background: '#d85636'}}>
-                <Toolbar>
-                <img src={logo} className="App-logo" alt="logo" height={30} style={{paddingBottom: 15}} />
-                &nbsp;<span style={{paddingBottom: 10, color: '#312a00', fontFamily: 'sans-serif', fontWeight: 'bold'}}>MCMC Monitor</span>
-                <span style={{marginLeft: 'auto'}} />
-                <span style={{paddingBottom: 15, color: '#312a00'}}>
-                    <ServerStatusControl />
-                    <HitherJobMonitorControl />
-                </span>
-                </Toolbar>
-            </AppBar>
+            <ApplicationBar
+                onOpenSettings={handleOpenSettings}
+            />
             <div style={{margin: 30}}>
-                
                 <workspaceViewPlugin.component workspace={workspace} workspaceDispatch={workspaceDispatch} workspaceRoute={workspaceRoute} workspaceRouteDispatch={workspaceRouteDispatch} />
             </div>
+            <Modal
+                open={settingsVisible}
+                onClose={handleCloseSettings}
+            >
+                <span>
+                    <SettingsWindow
+                        workspace={workspace}
+                        workspaceUri={workspaceUri}
+                    />
+                </span>
+            </Modal>
         </div>
     )
 }

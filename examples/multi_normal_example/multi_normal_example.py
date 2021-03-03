@@ -15,6 +15,7 @@ def main():
 
     # Monitor the stan run using this context manager
     with MCMCMonitorStan(
+      workspace_uri='default',
       run_label='multi-normal-example', # this label will show up in the monitor app
       # monitor these parameters
       parameter_keys=["lp__", "accept_stat__", "stepsize__", "treedepth__", "n_leapfrog__", "divergent__", "energy__"],

@@ -7,6 +7,7 @@ export type { WorkspaceRoute, WorkspaceRouteDispatch } from './WorkspaceRoute';
 export type { WorkspaceViewProps } from './WorkspaceViewPlugin';
 
 export type MainWindowProps = {
+    workspaceUri: string | undefined
 }
 export interface MainWindowPlugin extends BasePlugin {
     type: 'MainWindow'

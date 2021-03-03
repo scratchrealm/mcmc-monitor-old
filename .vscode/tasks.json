@@ -100,5 +100,32 @@
             },
             "detail": "Used internally"
         },
+        {
+            "label": "build-docker",
+            "type": "shell",
+            "command": "bash -ic .vscode/tasks/build-docker.sh",
+            "presentation": {
+                "clear": true
+            },
+            "detail": "Build the docker image"
+        },
+        {
+            "label": "push-docker",
+            "type": "shell",
+            "command": "bash -ic .vscode/tasks/push-docker.sh",
+            "presentation": {
+                "clear": true
+            },
+            "detail": "Push the docker image"
+        },
+        {
+            "label": "run-docker-local",
+            "type": "shell",
+            "command": "bash -ic .vscode/tasks/run-docker-local.sh",
+            "presentation": {
+                "clear": true
+            },
+            "detail": "Run the docker image locally"
+        }
     ]
 }

@@ -7,7 +7,8 @@ from .workspace import load_workspace
 from .monitor_stan_run import monitor_stan_run, finalize_monitor_stan_run
 
 class MCMCMonitorStan():
-    def __init__(self, *, run_label: str, parameter_keys: List[str], run_metadata: dict={}, output_dir=None):
+    def __init__(self, *, run_label: str, parameter_keys: List[str], run_metadata: dict={}, workspace_uri: str='default', output_dir=None):
+        self._workspace_uri = workspace_uri
         self._run_label = run_label
         self._parameter_keys = parameter_keys
         self._run_metadata = run_metadata
@@ -39,7 +40,7 @@ class MCMCMonitorStan():
             self._remove = False
         
         # Load the default mcmc-monitor workspace and create a new run
-        monitor_workspace = load_workspace()
+        monitor_workspace = load_workspace(self._workspace_uri)
         run_id = monitor_workspace.add_run(label=self._run_label, metadata=self._run_metadata)
         # begin monitoring the output directory for this run
         monitor_stan_run(

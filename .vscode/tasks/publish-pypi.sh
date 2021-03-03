@@ -2,9 +2,6 @@
 
 set -ex
 
-.vscode/tasks/yarn-build.sh
+.vscode/tasks/build-py-dist.sh
 
-cd src/python
-rm -rf dist
-python setup.py sdist
-twine upload dist/*
+twine upload src/python/dist/*

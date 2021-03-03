@@ -58,7 +58,7 @@ Open the web app in a browser at http://localhost:10407. This should display an 
 With the kachery daemon and the web app running you are now ready to try out your first MCMC run. Run the following inside the conda environment created above:
 
 ```
-python examples/multi_normal_example.py
+python examples/multi_normal_example/multi_normal_example.py
 ```
 
 A few seconds after the sampling begins, a new run should appear in the workspace on the web browser. Click on that to monitor in real time the progress and convergence of the MCMC sampling.

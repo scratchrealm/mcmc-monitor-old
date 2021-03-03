@@ -1,13 +1,13 @@
 import { Modal } from '@material-ui/core';
 import { useSubfeed } from 'labbox';
 import React, { FunctionComponent, useCallback, useMemo, useReducer, useState } from 'react';
-import { MainWindowProps, useWorkspaceViewPlugins, workspaceRouteReducer } from '../../pluginInterface';
+import { MainWindowProps, useWorkspaceViewPlugins } from '../../pluginInterface';
 import { parseWorkspaceUri } from '../../pluginInterface/misc';
 import { WorkspaceAction, workspaceReducer } from '../../pluginInterface/Workspace';
 import ApplicationBar from './ApplicationBar';
 import SettingsWindow from './SettingsWindow';
 
-const MainWindow: FunctionComponent<MainWindowProps> = ({ workspaceUri }) => {
+const MainWindow: FunctionComponent<MainWindowProps> = ({ workspaceUri, workspaceRoute, workspaceRouteDispatch }) => {
     const workspaceViewPlugin = useWorkspaceViewPlugins().filter(p => (p.name === 'WorkspaceView'))[0]
     if (!workspaceViewPlugin) throw Error('Unable to find workspace view plugin')
 
@@ -26,8 +26,6 @@ const MainWindow: FunctionComponent<MainWindowProps> = ({ workspaceUri }) => {
     const workspaceDispatch = useCallback((a: WorkspaceAction) => {
         appendWorkspaceMessages([a])
     }, [appendWorkspaceMessages])
-
-    const [workspaceRoute, workspaceRouteDispatch] = useReducer(workspaceRouteReducer, {page: 'main'})
 
     const handleOpenSettings = useCallback(() => {
         setSettingsVisible(true)

@@ -48,6 +48,16 @@ class MCMCMonitorStan():
             self.output_dir,
             self._parameter_keys
         )
+        print('========================================================')
+        print('Monitoring stan run')
+        print(f'Workspace URI: {monitor_workspace.get_workspace_uri()}')
+        print(f'Run ID: {run_id}')
+        url = os.getenv('MCMC_MONITOR_URL', None)
+        if not url:
+            print('Environment variable not set: MCMC_MONITOR_URL')
+            url = '<MCMC_MONITOR_URL>'
+        print(f'{url}/run/{run_id}?workspace={monitor_workspace.get_workspace_uri()}')
+        print('========================================================')
 
         return self
 
@@ -56,6 +66,9 @@ class MCMCMonitorStan():
         finalize_monitor_stan_run(self.output_dir)
         if self._remove:
             _rmdir_with_retries(self.output_dir, num_retries=5)
+
+    def workspace_uri(self):
+        return self._workspace_uri
 
     def path(self):
         return self._path

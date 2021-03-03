@@ -5,7 +5,7 @@ import setuptools
 
 setuptools.setup(
     name='mcmc-monitor',
-    version='0.1.4',
+    version='0.1.5',
     author="Jeremy Magland",
     author_email="jmagland@flatironinstitute.org",
     description="",

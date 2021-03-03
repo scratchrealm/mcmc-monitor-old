@@ -1,6 +1,7 @@
 import { BasePlugin, ExtensionContext, usePlugins } from "labbox";
 import { FunctionComponent, useMemo } from "react";
 import { RunViewPlugin } from "./RunViewPlugin";
+import { WorkspaceRoute, WorkspaceRouteDispatch } from './WorkspaceRoute';
 import { WorkspaceViewPlugin } from "./WorkspaceViewPlugin";
 export { workspaceRouteReducer } from './WorkspaceRoute';
 export type { WorkspaceRoute, WorkspaceRouteDispatch } from './WorkspaceRoute';
@@ -8,6 +9,8 @@ export type { WorkspaceViewProps } from './WorkspaceViewPlugin';
 
 export type MainWindowProps = {
     workspaceUri: string | undefined
+    workspaceRoute: WorkspaceRoute
+    workspaceRouteDispatch: WorkspaceRouteDispatch
 }
 export interface MainWindowPlugin extends BasePlugin {
     type: 'MainWindow'

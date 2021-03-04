@@ -56,7 +56,7 @@ def start_app(*, api_websocket: bool=False, api_http: bool=False, client_dev: bo
         #!/bin/bash
 
         cd {thisdir}
-        exec serve -l 10407 build
+        exec serve -l 10407 -s build
         ''')
         scripts.append(s)
     

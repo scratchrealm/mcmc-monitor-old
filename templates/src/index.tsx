@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import config from './config.json';
 import './index.css';
-import { MMPlugin } from './python/mcmc_monitor/extensions/pluginInterface';
+import { MMPlugin } from './python/{{ projectNameUnderscore }}/extensions/pluginInterface';
 import registerExtensions from './registerExtensions';
 import reportWebVitals from './reportWebVitals';
 

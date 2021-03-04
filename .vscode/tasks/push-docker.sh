@@ -2,4 +2,4 @@
 
 set -ex
 
-docker push magland/mcmc-monitor:0.1.6
+docker push magland/mcmc-monitor:0.1.7

@@ -1,3 +1,4 @@
+import time
 import uuid
 import kachery_p2p as kp
 
@@ -34,7 +35,12 @@ class Workspace:
             'runId': run_id,
             'runLabel': label,
             'metaData': metadata,
-            'uri': run_subfeed.get_uri()
+            'uri': run_subfeed.get_uri(),
+            'runtime': {
+                'nodeId': kp.get_node_id()
+            },
+            'timestamp': time.time(),
+            'mcmcMonitorVersion': '0.1.7'
         }
         workspace_subfeed = self._feed.get_subfeed(dict(workspaceName=self._workspace_name))
         workspace_subfeed.append_message({

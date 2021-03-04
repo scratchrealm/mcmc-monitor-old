@@ -1,7 +1,11 @@
 export type WorkspaceMCMCRun = {
     runId: string
     runLabel: string
-    metaData: string
+    metaData: any
+    timestamp?: number
+    runtime?: {
+        nodeId?: string
+    }
     uri: string
 }
 

@@ -31,7 +31,7 @@ const SettingsWindow: FunctionComponent<Props> = ({ workspaceUri }) => {
     const { feedUri, workspaceName } = parseWorkspaceUri(workspaceUri)
     return (
         <div className={classes.paper}>
-            <h2>MCMC Monitor 0.1.6</h2>
+            <h2>MCMC Monitor 0.1.7</h2>
             <Table>
                 <TableRow>
                     <TableCell>Workspace URI</TableCell>

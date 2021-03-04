@@ -1,4 +1,5 @@
 import { FunctionComponent, useMemo } from "react"
+import { formatTimestamp } from "../../common/misc"
 import NiceTable from "../../common/NiceTable"
 import { Iteration } from "../../pluginInterface"
 
@@ -42,11 +43,6 @@ const IterationsTable: FunctionComponent<{iterations: Iteration[]}> = ({iteratio
             columns={columns}
         />
     )
-}
-
-const formatTimestamp = (timestamp: number) => {
-    const x = new Date(timestamp * 1000);
-    return x.toISOString()
 }
 
 export default IterationsTable

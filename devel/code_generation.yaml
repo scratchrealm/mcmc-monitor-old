@@ -1,0 +1,20 @@
+dockerUser: magland
+webSocketPort: 10408
+httpPort: 10409
+classPrefix: MM
+extensions:
+    -
+        name: chainstable
+        relPath: chainstable/chainstable
+    -
+        name: iterationsplot
+        relPath: iterationsplot/iterationsplot
+    -
+        name: iterationstable
+        relPath: iterationstable/iterationstable
+    -
+        name: mainwindow
+        relPath: mainwindow/mainwindow
+    -
+        name: workspaceview
+        relPath: workspaceview/workspaceview

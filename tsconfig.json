@@ -22,5 +22,6 @@
   },
   "include": [
     "src"
-, "python/mcmc_monitor/extensions"  ]
+, "python/mcmc_monitor/extensions"  ],
+  "exclude": ["templates"]
 }

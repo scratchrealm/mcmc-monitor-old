@@ -1,3 +1,5 @@
+// This file was automatically generated. Do not edit directly. See devel/templates.
+
 // Warning: this file is auto-generated from a template
 
 import { createExtensionContext, LabboxProvider } from 'labbox';

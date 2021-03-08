@@ -30,7 +30,7 @@ spec:
         - name: KACHERY_STORAGE_DIR
           value: /data/kachery-storage
         ports:
-        - containerPort: 10407
+        - containerPort: {{ clientPort }}
         volumeMounts:
           - mountPath: "/data"
             name: {{ projectName }}-1-pv-storage

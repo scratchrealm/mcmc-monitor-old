@@ -1,4 +1,5 @@
 dockerUser: magland
+clientPort: 10407
 webSocketPort: 10408
 httpPort: 10409
 classPrefix: MM

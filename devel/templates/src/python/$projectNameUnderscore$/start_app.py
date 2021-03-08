@@ -1,5 +1,3 @@
-# This file was automatically generated. Do not edit directly. See devel/templates.
-
 import os
 import signal
 from typing import List, Union
@@ -27,7 +25,7 @@ def start_app(*, api_websocket: bool=False, api_http: bool=False, client_dev: bo
         #!/bin/bash
 
         export LABBOX_EXTENSIONS_DIR={thisdir}/extensions
-        export LABBOX_WEBSOCKET_PORT=10408
+        export LABBOX_WEBSOCKET_PORT={{ webSocketPort }}
 
         exec labbox_start_api_websocket
         ''')
@@ -37,7 +35,7 @@ def start_app(*, api_websocket: bool=False, api_http: bool=False, client_dev: bo
         s = hi.ShellScript(f'''
         #!/bin/bash
 
-        export LABBOX_HTTP_PORT=10409
+        export LABBOX_HTTP_PORT={{ httpPort }}
 
         exec labbox_start_api_http
         ''')
@@ -48,7 +46,7 @@ def start_app(*, api_websocket: bool=False, api_http: bool=False, client_dev: bo
         #!/bin/bash
 
         cd {thisdir}/../..
-        export PORT=10407
+        export PORT={{ clientPort }}
         exec yarn start
         ''')
         scripts.append(s)
@@ -58,7 +56,7 @@ def start_app(*, api_websocket: bool=False, api_http: bool=False, client_dev: bo
         #!/bin/bash
 
         cd {thisdir}
-        exec serve -l 10407 -s build
+        exec serve -l {{ clientPort }} -s build
         ''')
         scripts.append(s)
     

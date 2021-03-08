@@ -29,7 +29,7 @@ Choose a directory where temporary kachery files will be stored and set the KACH
 export KACHERY_STORAGE_DIR="<your-chosen-tmp-file-directory>" 
 ```
 
-Open a new terminal and start a kachery-p2p daemon, selecting a `<node-label>` for display purposes:
+Open a new terminal and start a kachery-p2p daemon, selecting your own `<node-label>` for display purposes:
 
 ```
 kachery-p2p-start-daemon --label <node-label>
@@ -39,7 +39,7 @@ Keep this running. It allows communication between the Python script and the GUI
 
 ## Installing and running the app
 
-Upgrade to the latest mcmc-monitor (it may be worth restarting the kachery daemon in case updates have been made to the kachery-p2p package):
+Upgrade to the latest mcmc-monitor (it may also be worth restarting the kachery daemon in case updates have been made to the kachery-p2p package):
 
 ```
 pip install --upgrade mcmc-monitor

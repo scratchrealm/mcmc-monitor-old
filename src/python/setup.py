@@ -22,7 +22,8 @@ setuptools.setup(
         'scipy',
         "aiohttp",
         "aiohttp_cors",
-        'labbox==0.1.22'
+        'labbox==0.1.22',
+        'jinjaroot>=0.0.2'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

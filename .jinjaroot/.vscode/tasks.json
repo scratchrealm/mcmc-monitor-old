@@ -38,7 +38,7 @@
             "presentation": {
                 "clear": true
             },
-            "detail": "Install mcmc-monitor in development mode using `pip install -e .`"
+            "detail": "Install {{ projectName }} in development mode using `pip install -e .`"
         },
         {
             "label": "Publish PyPI",

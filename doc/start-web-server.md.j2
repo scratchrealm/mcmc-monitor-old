@@ -32,21 +32,7 @@ Choose an existing directory where temporary kachery files will be stored and se
 export KACHERY_STORAGE_DIR="<your-chosen-tmp-file-directory>" 
 ```
 
-You can also set the following optional environment variables
-
-```bash
-# KACHERY_P2P_CONFIG_DIR
-# This should correspond to the config directory being used by the kachery-p2p daemon
-# By default it is $HOME/.kachery-p2p
-export KACHERY_P2P_CONFIG_DIR="<Config directory for kachery-p2p>"
-
-# KACHERY_P2P_API_PORT
-# This should correspond to the port being used by the kachery-p2p daemon
-# By default it is 20431
-export KACHERY_P2P_API_PORT="<Port number used by kachery-p2p daemon>"
-```
-
-Ensure that these environment variables are set with each new terminal session by adding those lines to your ~/.bashrc file.
+Ensure that this environment variable is set with each new terminal session by adding the above line to your ~/.bashrc file.
 
 Open a new terminal and start a kachery-p2p daemon, selecting a `<node-label>` for display purposes:
 
@@ -56,7 +42,7 @@ Open a new terminal and start a kachery-p2p daemon, selecting a `<node-label>` f
 kachery-p2p-start-daemon --label <node-label>
 ```
 
-Keep this running. It allows communication between the Python script and the GUI. For more information, see [kachery-p2p](https://github.com/flatironinstitute/kachery-p2p).
+Keep this running. It allows communication between the Python script and the GUI. See below for more advanced configuration options, or see [kachery-p2p](https://github.com/flatironinstitute/kachery-p2p).
 
 ## Installing and running the app
 
@@ -76,3 +62,21 @@ Now run the {{ projectName }} service:
 Open the web app in a browser at http://localhost:{{ clientPort }}.
 
 {{ txt1 }}
+
+## Advanced kachery daemon configuration
+
+You can also set the following optional environment variables
+
+```bash
+# KACHERY_P2P_CONFIG_DIR
+# This should correspond to the config directory being used by the kachery-p2p daemon
+# By default it is $HOME/.kachery-p2p
+export KACHERY_P2P_CONFIG_DIR="<Config directory for kachery-p2p>"
+
+# KACHERY_P2P_API_PORT
+# This should correspond to the port being used by the kachery-p2p daemon
+# By default it is 20431
+export KACHERY_P2P_API_PORT="<Port number used by kachery-p2p daemon>"
+```
+
+See [kachery-p2p](https://github.com/flatironinstitute/kachery-p2p)

@@ -2,66 +2,40 @@
 
 Browser-based monitoring of MCMC runs.
 
-Tested on Linux, should also run on macOS and Windows Subsystem for Linux.
+## Installation and setup
 
-## Prerequisites and kachery setup
-
-It is recommended that you start with a fresh conda environment with Python 3.8 or higher. For example:
-
-```bash
-conda create -n mcmc-monitor python=3.8
-```
-
-After activating the new environment (`conda activate mcmc-monitor`), install the following prerequisite packages:
-
-```
-conda install -c conda-forge nodejs
-npm install -g serve
-pip install --upgrade mcmc-monitor
-
-# The following (from the cmdstanpy package) does the work of installing cmdstan
-install_cmdstan
-```
-
-Choose a directory where temporary kachery files will be stored and set the KACHERY_STORAGE_DIR environment variable:
-
-```
-export KACHERY_STORAGE_DIR="<your-chosen-tmp-file-directory>" 
-```
-
-Open a new terminal and start a kachery-p2p daemon, selecting your own `<node-label>` for display purposes:
-
-```
-kachery-p2p-start-daemon --label <node-label>
-```
-
-Keep this running. It allows communication between the Python script and the GUI. For more information, see [kachery-p2p](https://github.com/flatironinstitute/kachery-p2p).
-
-## Installing and running the app
-
-Upgrade to the latest mcmc-monitor (it may also be worth restarting the kachery daemon in case updates have been made to the kachery-p2p package):
-
-```
-pip install --upgrade mcmc-monitor
-```
-
-Now run the mcmc-monitor service:
-
-```
-mcmc-monitor
-```
-
-Open the web app in a browser at http://localhost:10407. This should display an empty workspace (you haven't yet monitored any runs). You are now ready for the first example.
+[Installation and setup](./doc/start-web-server.md)
 
 ## First example: multi-normal Stan
 
-With the kachery daemon and the web app running you are now ready to try out your first MCMC run. Run the following inside the conda environment created above:
+With the kachery daemon and the web app running you are now ready to try out your first MCMC run. Run the following inside the conda environment created during installation:
 
 ```
 python examples/multi_normal_example/multi_normal_example.py
 ```
 
 A few seconds after the sampling begins, a new run should appear in the workspace on the web browser. Click on that to monitor in real time the progress and convergence of the MCMC sampling.
+
+## Example usage
+
+```python
+with MCMCMonitorStan(
+    # workspace for storing the run
+    workspace_uri='default',
+    # label for display on the monitoring app
+    run_label='multi-normal-example', 
+    # parameters to monitor
+    parameter_keys=["lp__", "accept_stat__", "stepsize__", "treedepth__", "n_leapfrog__", "divergent__", "energy__"],
+    # attach metadata (for future use)
+    run_metadata={}
+) as monitor:
+    # Load the stan program
+    model = CmdStanModel(stan_file=model_fname)
+
+    # Start sampling the posterior for this run (we need to use monitor.output_dir as the output directory)
+    fit = model.sample(data={...}, output_dir=monitor.output_dir,
+                        iter_sampling=iter_sampling, iter_warmup=iter_warmup, save_warmup=True)
+```
 
 ## Developer instructions
 

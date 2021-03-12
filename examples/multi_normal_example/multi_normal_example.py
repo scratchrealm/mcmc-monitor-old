@@ -8,8 +8,8 @@ def main():
     model_fname = f'{thisdir}/multi-normal.stan'
 
     # These are adjustable
-    rho = 0.95
-    N = 300
+    rho = 0.92
+    N = 150
     iter_warmup = 100
     iter_sampling = 100
 

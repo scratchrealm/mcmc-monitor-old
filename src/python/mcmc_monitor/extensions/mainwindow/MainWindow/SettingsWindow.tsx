@@ -23,15 +23,16 @@ const useStyles = makeStyles((theme) => ({
 type Props = {
     workspace: WorkspaceState
     workspaceUri: string | undefined
+    version: string
 }
 
-const SettingsWindow: FunctionComponent<Props> = ({ workspaceUri }) => {
+const SettingsWindow: FunctionComponent<Props> = ({ workspaceUri, version }) => {
     const classes = useStyles();
     const { serverInfo } = useContext(LabboxProviderContext)
     const { feedUri, workspaceName } = parseWorkspaceUri(workspaceUri)
     return (
         <div className={classes.paper}>
-            <h2>MCMC Monitor 0.1.7</h2>
+            <h2>MCMC Monitor {version}</h2>
             <Table>
                 <TableRow>
                     <TableCell>Workspace URI</TableCell>

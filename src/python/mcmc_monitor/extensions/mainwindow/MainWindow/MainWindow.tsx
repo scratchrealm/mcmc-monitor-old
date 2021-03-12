@@ -7,7 +7,7 @@ import { WorkspaceAction, workspaceReducer } from '../../pluginInterface/Workspa
 import ApplicationBar from './ApplicationBar';
 import SettingsWindow from './SettingsWindow';
 
-const MainWindow: FunctionComponent<MainWindowProps> = ({ workspaceUri, workspaceRoute, workspaceRouteDispatch }) => {
+const MainWindow: FunctionComponent<MainWindowProps> = ({ workspaceUri, workspaceRoute, workspaceRouteDispatch, version }) => {
     const workspaceViewPlugin = useWorkspaceViewPlugins().filter(p => (p.name === 'WorkspaceView'))[0]
     if (!workspaceViewPlugin) throw Error('Unable to find workspace view plugin')
 
@@ -51,6 +51,7 @@ const MainWindow: FunctionComponent<MainWindowProps> = ({ workspaceUri, workspac
                     <SettingsWindow
                         workspace={workspace}
                         workspaceUri={workspaceUri}
+                        version={version}
                     />
                 </span>
             </Modal>

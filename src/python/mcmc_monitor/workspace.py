@@ -1,6 +1,7 @@
 import time
 import uuid
 import kachery_p2p as kp
+from .version import __version__
 
 def parse_workspace_uri(workspace_uri: str):
     if not workspace_uri.startswith('workspace://'):
@@ -40,7 +41,7 @@ class Workspace:
                 'nodeId': kp.get_node_id()
             },
             'timestamp': time.time(),
-            'mcmcMonitorVersion': '0.1.7'
+            'mcmcMonitorVersion': __version__
         }
         workspace_subfeed = self._feed.get_subfeed(dict(workspaceName=self._workspace_name))
         workspace_subfeed.append_message({

@@ -12,7 +12,7 @@ def monitor_stan_run(run: dict, output_dir: str, parameter_keys: List[str]):
 
 def finalize_monitor_stan_run(output_dir):
     fname = f'{output_dir}/finalize_stan_run'
-    time.sleep(5)
+    time.sleep(3)
     with open(fname, 'w') as f:
         f.write('Finalizing monitoring of stan run')
     # wait until file disappears

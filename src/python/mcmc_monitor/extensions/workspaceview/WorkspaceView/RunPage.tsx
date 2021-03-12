@@ -1,7 +1,8 @@
 import { useSubfeed } from 'labbox';
-import React, { FunctionComponent, useCallback, useMemo } from 'react';
+import React, { FunctionComponent, useCallback, useMemo, useReducer } from 'react';
 import Hyperlink from '../../common/Hyperlink';
 import { isIteration, Iteration, useRunViewPlugins, WorkspaceRouteDispatch } from '../../pluginInterface';
+import { initialRunSelection, runSelectionReducer } from '../../pluginInterface/RunSelection';
 import { WorkspaceState } from '../../pluginInterface/Workspace';
 
 
@@ -24,6 +25,8 @@ const RunPage:  FunctionComponent<{workspace: WorkspaceState, runId: string, wor
 
     const rvPlugins = useRunViewPlugins()
 
+    const [runSelection, runSelectionDispatch] = useReducer(runSelectionReducer, initialRunSelection)
+
     if (!run) return <div>Run not found: {runId}</div>
 
     return (
@@ -34,11 +37,15 @@ const RunPage:  FunctionComponent<{workspace: WorkspaceState, runId: string, wor
                     <span>
                         {
                             rvPlugins.map(p => (
-                                <p.component
-                                    key={p.name}
-                                    run={run}
-                                    iterations={iterations}
-                                />
+                                <div style={{paddingBottom: 30}}>
+                                    <p.component
+                                        key={p.name}
+                                        run={run}
+                                        iterations={iterations}
+                                        runSelection={runSelection}
+                                        runSelectionDispatch={runSelectionDispatch}
+                                    />
+                                </div>
                             ))
                         }
                     </span>

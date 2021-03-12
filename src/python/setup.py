@@ -1,15 +1,6 @@
-import codecs
-import os.path
-
 import setuptools
 
 setuptools.setup(
-    name='mcmc-monitor',
-    version='0.1.7',
-    author="Jeremy Magland",
-    author_email="jmagland@flatironinstitute.org",
-    description="",
-    url="https://github.com/magland/mcmc-monitor",
     packages=setuptools.find_packages(),
     include_package_data=True,
     scripts=[
@@ -22,7 +13,7 @@ setuptools.setup(
         'scipy',
         "aiohttp",
         "aiohttp_cors",
-        'labbox==0.1.22',
+        'labbox>=0.1.22',
         'jinjaroot>=0.0.2'
     ],
     classifiers=[

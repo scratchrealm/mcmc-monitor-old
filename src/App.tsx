@@ -6,7 +6,7 @@ import './App.css';
 import { MainWindowPlugin, MMPlugin, WorkspaceRoute } from './python/mcmc_monitor/extensions/pluginInterface';
 import { WorkspaceRouteAction, workspaceRouteReducer } from './python/mcmc_monitor/extensions/pluginInterface/WorkspaceRoute';
 
-function App() {
+function App({version}: {version: string}) {
   const plugins = usePlugins<MMPlugin>()
   const mainWindowPlugin = plugins.filter(p => (p.name === 'MainWindow'))[0] as any as MainWindowPlugin
   if (!mainWindowPlugin) throw Error('Unable to find main window plugin.')
@@ -58,7 +58,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <mainWindowPlugin.component
-          {...{workspaceUri, workspaceRoute, workspaceRouteDispatch}}
+          {...{workspaceUri, workspaceRoute, workspaceRouteDispatch, version}}
         />
       </header>
     </div>

@@ -49,7 +49,7 @@ class MCMCMonitorStan():
             self._parameter_keys
         )
         print('========================================================')
-        print('Monitoring stan run')
+        print(f'Monitoring stan run in directory: {self.output_dir}')
         print(f'Workspace URI: {monitor_workspace.get_workspace_uri()}')
         print(f'Run ID: {run_id}')
         url = os.getenv('MCMC_MONITOR_URL', None)
@@ -63,6 +63,7 @@ class MCMCMonitorStan():
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         # allow monitoring to finish before removing directory
+        print(f'Finalizing monitoring of stan run in directory: {self.output_dir}')
         finalize_monitor_stan_run(self.output_dir)
         if self._remove:
             _rmdir_with_retries(self.output_dir, num_retries=5)

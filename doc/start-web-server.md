@@ -3,7 +3,7 @@
 
 Tested on Linux, should also run on macOS and Windows Subsystem for Linux.
 
-## Prerequisites and kachery setup
+## Prerequisites
 
 It is recommended that you start with a fresh conda environment with Python 3.8 or higher. For example:
 
@@ -17,37 +17,31 @@ After activating the new environment (`conda activate mcmc-monitor`), install th
 conda install -c conda-forge nodejs
 npm install -g serve
 pip install mcmc-monitor
-```
 
-**Important:** On macOS you may need to use the following to get a recent version of nodejs:
-
-```bash
+# On macOS you may need to use the following to get a recent version of nodejs:
 conda install nodejs -c conda-forge --repodata-fn=repodata.json
 ```
 
-Choose an existing directory where temporary kachery files will be stored and set the KACHERY_STORAGE_DIR environment variable:
+## Kachery daemon
 
-```
-# This should be the full path to an existing directory.
-# For example, you could use: $HOME/kachery-storage
-export KACHERY_STORAGE_DIR="<your-chosen-tmp-file-directory>" 
-```
-
-Ensure that this environment variable is set with each new terminal session by adding the above line to your ~/.bashrc file.
+To use mcmc-monitor you must have a running
+[kachery-p2p daemon](https://github.com/flatironinstitute/kachery-p2p).
+This allows communication between the Python script and the GUI.
+See below for more advanced configuration options.
 
 Open a new terminal and start a kachery-p2p daemon, selecting a `<node-label>` for display purposes:
 
 ```
 # Make sure you are in the conda environment created above
-# and that the KACHERY_STORAGE_DIR env variable is set
 kachery-p2p-start-daemon --label <node-label>
 ```
 
-Keep this running. It allows communication between the Python script and the GUI. See below for more advanced configuration options, or see [kachery-p2p](https://github.com/flatironinstitute/kachery-p2p).
+Keep this running. 
 
 ## Installing and running the app
 
-Upgrade to the latest mcmc-monitor (it may be worth restarting the kachery daemon in case updates have been made to the kachery-p2p package):
+Upgrade to the latest mcmc-monitor (it may be worth restarting the kachery daemon in case
+updates have been made to the kachery-p2p package):
 
 ```
 pip install --upgrade mcmc-monitor
@@ -66,9 +60,14 @@ On the first run, this should display an empty workspace. Run an example Python 
 
 ## Advanced kachery daemon configuration
 
-You can also set the following optional environment variables
+You can also set the following optional environment variables for the kachery daemon:
 
 ```bash
+# Choose an existing directory where temporary kachery files will be stored.
+# This should be the full path to an existing directory.
+# By default (if not set) the following will be used: $HOME/kachery-storage
+export KACHERY_STORAGE_DIR="<your-chosen-data-file-directory>" 
+
 # KACHERY_P2P_CONFIG_DIR
 # This should correspond to the config directory being used by the kachery-p2p daemon
 # By default it is $HOME/.kachery-p2p
@@ -79,5 +78,7 @@ export KACHERY_P2P_CONFIG_DIR="<Config directory for kachery-p2p>"
 # By default it is 20431
 export KACHERY_P2P_API_PORT="<Port number used by kachery-p2p daemon>"
 ```
+
+Ensure that these environment variables are set with each new terminal session by adding the above lines to your ~/.bashrc file.
 
 See [kachery-p2p](https://github.com/flatironinstitute/kachery-p2p)

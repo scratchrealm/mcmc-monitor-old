@@ -17,22 +17,7 @@ class MCMCMonitorStan():
 
     def __enter__(self):
         if self.output_dir is None:
-            if 'KACHERY_STORAGE_DIR' in os.environ:
-                storage_dir = os.getenv('KACHERY_STORAGE_DIR')
-            else:
-                storage_dir = None
-            if storage_dir is not None:
-                dirpath = os.path.join(storage_dir, 'tmp')
-                if not os.path.exists(dirpath):
-                    try:
-                        os.mkdir(dirpath)
-                    except:
-                        # maybe somebody else created this directory
-                        if not os.path.exists:
-                            raise Exception(
-                                f'Unexpected problem creating temporary directory: {dirpath}')
-            else:
-                dirpath = None
+            dirpath = None
             self.output_dir = str(tempfile.mkdtemp(
                 prefix=self._prefix, dir=dirpath))
             self._remove = True

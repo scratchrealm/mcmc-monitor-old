@@ -68,7 +68,7 @@ def start_app(*, api_websocket: bool=False, api_http: bool=False, client_dev: bo
         sleep 1
         echo "Please wait..."
         sleep 2
-        echo "Open mcmc-monitor in your browser: http://localhost:14101"
+        echo "Open mcmc-monitor in your browser: http://localhost:10407"
 
         # wait for use to press CTRL+c
         while true

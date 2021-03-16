@@ -13,7 +13,7 @@ setuptools.setup(
         'scipy',
         "aiohttp",
         "aiohttp_cors",
-        'labbox>=0.1.26',
+        'labbox>=0.1.27',
         'jinjaroot>=0.0.2'
     ],
     classifiers=[

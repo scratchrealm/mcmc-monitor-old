@@ -11,8 +11,8 @@ SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
 RUN conda install -c conda-forge nodejs
 RUN npm install -g serve
 
-COPY ./dist/mcmc-monitor-0.1.9.tar.gz /mcmc-monitor-0.1.9.tar.gz
-RUN pip install /mcmc-monitor-0.1.9.tar.gz
+COPY ./dist/mcmc-monitor-0.1.10.tar.gz /mcmc-monitor-0.1.10.tar.gz
+RUN pip install /mcmc-monitor-0.1.10.tar.gz
 
 # Make sure the environment is activated and mcmc-monitor is installed
 RUN echo "Make sure mcmc-monitor is installed:"

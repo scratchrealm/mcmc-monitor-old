@@ -1,6 +1,6 @@
 projectName: mcmc-monitor
 projectNameUnderscore: mcmc_monitor
-projectVersion: 0.1.9
+projectVersion: 0.1.10
 projectDescription: Browser-based monitoring of MCMC runs
 projectUrl: https://github.com/flatironinstitute/mcmc-monitor
 projectAuthor: Jeremy Magland

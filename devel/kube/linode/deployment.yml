@@ -21,7 +21,7 @@ spec:
             claimName: pvc-mcmc-monitor-1
       containers:
       - name: mcmc-monitor-1
-        image: magland/mcmc-monitor:0.1.8
+        image: magland/mcmc-monitor:0.1.9
         imagePullPolicy: Always
         env:
         - name: HOME

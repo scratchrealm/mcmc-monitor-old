@@ -10,4 +10,4 @@ rm -rf devel/docker/dist
 cp -r src/python/dist devel/docker/
 
 cd devel/docker
-docker build -t magland/mcmc-monitor:0.1.8 .
+docker build -t magland/mcmc-monitor:0.1.9 .

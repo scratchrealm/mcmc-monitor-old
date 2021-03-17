@@ -56,9 +56,6 @@ class MCMCMonitorStan():
     def workspace_uri(self):
         return self._workspace_uri
 
-    def path(self):
-        return self._path
-
 def _rmdir_with_retries(dirname: str, num_retries: int, delay_between_tries: float=1):
     for retry_num in range(1, num_retries + 1):
         if not os.path.exists(dirname):

@@ -4,5 +4,5 @@
 
 set -ex
 
-jinjaroot generate --force
+jinjaroot generate
 exec .vscode/tasks/create_gen_ts_files.py

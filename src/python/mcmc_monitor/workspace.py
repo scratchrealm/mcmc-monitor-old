@@ -58,7 +58,7 @@ class Workspace:
             'type': 'DeleteRuns',
             'runIds': [run_id]
         })
-        del self._run[run_id]
+        del self._runs[run_id]
     def get_run(self, run_id: str):
         return self._runs[run_id]
     def get_run_ids(self):

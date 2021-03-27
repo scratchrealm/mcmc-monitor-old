@@ -5,6 +5,7 @@ projectDescription: Browser-based monitoring of MCMC runs
 projectUrl: https://github.com/flatironinstitute/mcmc-monitor
 projectAuthor: Jeremy Magland
 projectAuthorEmail: jmagland@flatironinstitute.org
+pythonPackageDir: ./src/python
 dockerUser: magland
 clientPort: 10407
 webSocketPort: 10408

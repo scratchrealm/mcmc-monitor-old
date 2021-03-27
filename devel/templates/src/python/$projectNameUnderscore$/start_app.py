@@ -1,7 +1,7 @@
 import os
 import signal
 from typing import List, Union
-import hither as hi
+import kachery_p2p as kp
 
 class KeyboardInterruptHandler(object):
     def __enter__(self):
@@ -18,10 +18,10 @@ class KeyboardInterruptHandler(object):
 def start_app(*, api_websocket: bool=False, api_http: bool=False, client_dev: bool=False, client_prod: bool=False, kachery_daemon_run_opts: Union[None, str]=None):
     thisdir = os.path.dirname(os.path.realpath(__file__))
 
-    scripts: List[hi.ShellScript] = []
+    scripts: List[kp.ShellScript] = []
 
     if api_websocket:
-        s = hi.ShellScript(f'''
+        s = kp.ShellScript(f'''
         #!/bin/bash
 
         export LABBOX_EXTENSIONS_DIR={thisdir}/extensions
@@ -32,7 +32,7 @@ def start_app(*, api_websocket: bool=False, api_http: bool=False, client_dev: bo
         scripts.append(s)
     
     if api_http:
-        s = hi.ShellScript(f'''
+        s = kp.ShellScript(f'''
         #!/bin/bash
 
         export LABBOX_HTTP_PORT={{ httpPort }}
@@ -42,7 +42,7 @@ def start_app(*, api_websocket: bool=False, api_http: bool=False, client_dev: bo
         scripts.append(s)
     
     if client_dev:
-        s = hi.ShellScript(f'''
+        s = kp.ShellScript(f'''
         #!/bin/bash
 
         cd {thisdir}/../..
@@ -52,7 +52,7 @@ def start_app(*, api_websocket: bool=False, api_http: bool=False, client_dev: bo
         scripts.append(s)
     
     if client_prod:
-        s = hi.ShellScript(f'''
+        s = kp.ShellScript(f'''
         #!/bin/bash
 
         cd {thisdir}
@@ -61,7 +61,7 @@ def start_app(*, api_websocket: bool=False, api_http: bool=False, client_dev: bo
         scripts.append(s)
     
     if kachery_daemon_run_opts:
-        s = hi.ShellScript(f'''
+        s = kp.ShellScript(f'''
         #!/bin/bash
 
         cd {thisdir}

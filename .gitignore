@@ -1,3 +1,6 @@
+examples/*.hpp
+examples/multi-normal
+
 dist
 tmp
 devel/start-backend

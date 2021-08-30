@@ -1,0 +1,8 @@
+projectName: mcmc-monitor
+pythonProjectVersion: 0.2.0
+projectAuthor: Jeremy Magland and Jeff Soules
+projectAuthorEmail: jmagland@flatironinstitute.org
+projectDescription: Monitor MCMC runs using figurl
+projectUrl: https://github.com/magland/mcmc-monitor
+projectBugTrackerUrl: https://github.com/magland/mcmc-monitor/issues
+pythonPackageDir: .

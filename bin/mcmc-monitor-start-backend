@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+
+import mcmc_monitor
+
+if __name__ == '__main__':
+    mcmc_monitor.start_backend_cli()

@@ -1,29 +1,8 @@
 projectName: mcmc-monitor
-projectNameUnderscore: mcmc_monitor
-projectVersion: 0.1.11.dev1
-projectDescription: Browser-based monitoring of MCMC runs
-projectUrl: https://github.com/flatironinstitute/mcmc-monitor
-projectAuthor: Jeremy Magland
+pythonProjectVersion: 0.2.0
+projectAuthor: Jeremy Magland and Jeff Soules
 projectAuthorEmail: jmagland@flatironinstitute.org
-pythonPackageDir: ./src/python
-dockerUser: magland
-clientPort: 10407
-webSocketPort: 10408
-httpPort: 10409
-classPrefix: MM
-extensions:
-    -
-        name: chainstable
-        relPath: chainstable/chainstable
-    -
-        name: iterationsplot
-        relPath: iterationsplot/iterationsplot
-    -
-        name: iterationstable
-        relPath: iterationstable/iterationstable
-    -
-        name: mainwindow
-        relPath: mainwindow/mainwindow
-    -
-        name: workspaceview
-        relPath: workspaceview/workspaceview
+projectDescription: Monitor MCMC runs using figurl
+projectUrl: https://github.com/magland/mcmc-monitor
+projectBugTrackerUrl: https://github.com/magland/mcmc-monitor/issues
+pythonPackageDir: .

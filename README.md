@@ -1,88 +1,32 @@
 # mcmc-monitor
 
+Real-time browser-based monitoring of [MCMC](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo) runs using [figurl](https://github.com/magland/figurl).
+
+While mcmc-monitor is designed to be independent of the underlying MCMC package, right now the only supported use case is with [Stan](https://mc-stan.org/). Contact the authors if you would like to provide adapters for other systems.
+
 ## Prerequisites
 
-Create a new conda environment
+This software has been tested on Linux, but it should also work on macOS and Windows Subsystem for Linux.
 
-Install cmdstanpy: `pip install cmdstanpy`
+It is highly recommended that you perform all steps in a dedicated conda environment.
 
-Install cmdstan: `install_cmdstan`
 
-## Installation and setup
+## Kachery setup
 
-```
-pip install --upgrade mcmc-monitor kachery-daemon
-```
+In order to monitor your own [cmdstanpy](https://github.com/stan-dev/cmdstanpy/blob/develop/README.md) runs, you will need to [host a kachery node](https://github.com/kacheryhub/kachery-doc/blob/main/doc/kacheryhub-markdown/hostKacheryNode.md) on the computer where you are running your models. This background process allows mcmc-monitor to commicate with the web app. You will also need to [create a kachery channel](), [attach resources to it](), and [give your node permission to upload]() to that channel. Make a note of the kachery channel name and set the following environment variable:
 
-Start the kachery daemon with your owner
-
-Create a kachery node on kacheryhub.org
-
-Join the mcmc-monitor channel with passcode `ccm1-QSFtVOzx`
-
-Check the boxes for providing feeds and tasks on the mncmc-monitor channel.
-
-Set the FIGURL_CHANNEL environment variable to mcmc-monitor: `export FIGURL_CHANNEL=mcmc-monitor`
-
-Run the `examples/test_stan.py` script. This will give you a figurl link. Open it in your browser.
-
-## Example Python usage
-
-```python
-# test_stan.py
-
-from typing import List, Union
-from cmdstanpy import CmdStanModel
-from mcmc_monitor import StanMonitor
-import os
-
-def main():
-    # These are adjustable
-    rho = 0.95
-    N = 350
-    iter_warmup = 100
-    iter_sampling = 100
-
-    # specify .stan file for this model
-    thisdir = os.path.dirname(os.path.realpath(__file__))
-    model_fname = f'{thisdir}/multi-normal.stan'
-
-    with StanMonitor(
-        label='multi-normal-example',
-        # monitor these parameters
-        parameter_names=["lp__", "accept_stat__", "stepsize__", "treedepth__", "n_leapfrog__", "divergent__", "energy__"],
-        # attach meta data (for future use)
-        meta_data={}
-        ) as monitor:
-            # Load the model
-            model = CmdStanModel(stan_file=model_fname)
-
-            # Start sampling the posterior for this model/data (we need to use monitor._output_dir as the output directory)
-            fit = model.sample(data={'N': N, 'rho': rho}, output_dir=monitor._output_dir,
-                            iter_sampling=iter_sampling, iter_warmup=iter_warmup, save_warmup=True)
-
-if __name__ == '__main__':
-    main()
+```bash
+# You can put this in your ~/.bashrc file
+export FIGURL_CHANNEL=<CHANNEL-NAME>
 ```
 
-```c
-# multi-normal.stan
+## Getting started
 
-data {
-  real<lower = -1, upper = 1> rho;
-  int<lower = 0> N;
-}  
-transformed data {
-  vector[N] mu = rep_vector(0, N);
-  cov_matrix[N] Sigma;
-  for (m in 1:N)
-    for (n in 1:N)
-      Sigma[m, n] = rho^fabs(m - n);
-}
-parameters {
-  vector[N] y;
-}
-model {
-  y ~ multi_normal(mu, Sigma);
-}
+Once your kachery node is up and running and you have the FIGURL_CHANNEL environment variable set, you can install mcmc-monitor
+
+```bash
+# Preferably in the same conda environment as kachery
+pip install --upgrade mcmc-monitor
 ```
+
+To get started, try out [test_stan.py](./examples/test_stan.py). Note that the [multi-normal.stan](./examples/multi-normal.stan) file needs to be next next to this `.py` file. This will begin a multi-chain Stan run and will print out a link you can use to monitor the run in a web browser. You can also share that same link with others.

@@ -13,11 +13,11 @@ It is highly recommended that you perform all steps in a dedicated conda environ
 
 ## Kachery setup
 
-In order to monitor your own [cmdstanpy](https://github.com/stan-dev/cmdstanpy/blob/develop/README.md) runs, you will need to [host a kachery node](https://github.com/kacheryhub/kachery-doc/blob/main/doc/kacheryhub-markdown/hostKacheryNode.md) on the computer where you are running your models. This background process allows mcmc-monitor to commicate with the web app. You will also need to [create a kachery channel](), [attach resources to it](), and [give your node permission to upload]() to that channel. Make a note of the kachery channel name and set the following environment variable:
+In order to monitor your own [cmdstanpy](https://github.com/stan-dev/cmdstanpy/blob/develop/README.md) runs, you will need to [host a kachery node](https://github.com/kacheryhub/kachery-doc/blob/main/doc/hostKacheryNode.md) on the computer where you are running your models. This background process allows mcmc-monitor to commicate with the web app. You will also need to [create a kachery channel](https://github.com/kacheryhub/kachery-doc/blob/main/doc/createKacheryChannel.md). Make a note of the kachery channel name that you chose and set the following environment variable:
 
 ```bash
 # You can put this in your ~/.bashrc file
-export FIGURL_CHANNEL=<CHANNEL-NAME>
+export FIGURL_CHANNEL=<name-of-your-kachery-channel>
 ```
 
 ## Getting started

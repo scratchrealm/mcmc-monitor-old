@@ -5,10 +5,10 @@ import os
 
 def main():
     # These are adjustable parameters
-    rho = 0.95 # rho should be <1. Larger values make correspond to longer iterations.
+    rho = 0.998 # rho should be <1. Larger values make correspond to longer iterations.
     N = 200
-    iter_warmup = 100 # Number of warmup iterations
-    iter_sampling = 100 # Number of sampling iterations
+    iter_warmup = 10 # Number of warmup iterations
+    iter_sampling = 200 # Number of sampling iterations
     ##################################
 
     # specify .stan file for this model
@@ -21,14 +21,19 @@ def main():
         parameter_names=["lp__", "accept_stat__", "stepsize__", "treedepth__", "n_leapfrog__", "divergent__", "energy__"],
         # attach meta data (for future use)
         meta_data={}
-        ) as monitor:
-            # Load the model
-            model = CmdStanModel(stan_file=model_fname)
+    ) as monitor:
+        # Load the model
+        model = CmdStanModel(stan_file=model_fname)
 
-            # Start sampling the posterior for this model/data
-            # Use monitor._output_dir as the output directory
-            fit = model.sample(data={'N': N, 'rho': rho}, output_dir=monitor._output_dir,
-                            iter_sampling=iter_sampling, iter_warmup=iter_warmup, save_warmup=True)
+        # Start sampling the posterior for this model/data
+        # Use monitor._output_dir as the output directory
+        fit = model.sample(
+            data={'N': N, 'rho': rho},
+            output_dir=monitor._output_dir,
+            iter_sampling=iter_sampling,
+            iter_warmup=iter_warmup,
+            save_warmup=False
+        )
 
 if __name__ == '__main__':
     main()

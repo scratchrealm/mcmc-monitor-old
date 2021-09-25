@@ -9,13 +9,14 @@ import shutil
 import time
 
 class StanMonitor():
-    def __init__(self, *, label: str, parameter_names: List[str], meta_data: dict={}, output_dir: Union[str, None]=None):
+    def __init__(self, *, label: str, parameter_names: List[str], meta_data: dict={}, output_dir: Union[str, None]=None, debugging: bool=False):
         self._label = label
         self._parameter_names = parameter_names
         self._meta_data = meta_data
         self._output_dir = output_dir
         self._prefix = 'mcmc-monitor-'
         self._run_id = 'RUN-' + _random_id()
+        self._debugging = debugging
 
     def __enter__(self):
         if self._output_dir is None:
@@ -51,11 +52,7 @@ class StanMonitor():
             finalize_monitor_stan_run(self._output_dir)
         except Exception as e:
             print(f'WARNING: problem finalizing stan run: {str(e)}')
-        try:
-            self._run.finalize()
-        except Exception as e:
-            print(f'WARNING: problem finalizing stan run (2): {str(e)}')
-        if self._remove:
+        if self._remove and (not self._debugging):
             _rmdir_with_retries(self._output_dir, num_retries=5)
 
     def workspace_uri(self):

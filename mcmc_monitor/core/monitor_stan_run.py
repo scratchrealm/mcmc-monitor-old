@@ -29,6 +29,7 @@ class OutputCsvFile:
         self._file = open(self._csv_path, 'r')
         self._num_lines_processed = 0
         self._header_fields = None
+        self._complete = False
     def cleanup(self):
         self._file.close()
     @property
@@ -37,17 +38,19 @@ class OutputCsvFile:
     @property
     def num_lines_processed(self):
         return self._num_lines_processed
+    @property
+    def complete(self):
+        return self._complete
     def iterate(self):
         lines = self._file.readlines()
         if len(lines) > 0:
             self._process_lines(lines)
             self._num_lines_processed += len(lines)
-            return True
-        else:
-            return False
     def _process_lines(self, lines: List[str]):
         for line in lines:
-            if line.startswith('#'):
+            if len(line) <= 5:
+                self._complete = True
+            elif line.startswith('#'):
                 #comment
                 pass
             else:
@@ -79,19 +82,27 @@ class OutputMonitor:
         for fname, x in self._output_csv_files.items():
             x.cleanup()
     def start_iterating(self, interval=1):
+        last_status_print = 0
         while True:
-            if self.iterate():
-                pass
-                # self.print_status()
-            if not os.path.exists(self._output_dir):
-                break
-            fname0 = f'{self._output_dir}/finalize_stan_run'
-            if os.path.exists(fname0):
-                os.unlink(fname0)
-                break
+            something_incomplete = self.iterate()
+            if something_incomplete:
+                elapsed = time.time() - last_status_print
+                if elapsed > 8:
+                    self.print_status()
+                    last_status_print = time.time()
+            if not something_incomplete:
+                if not os.path.exists(self._output_dir):
+                    break
+                fname0 = f'{self._output_dir}/finalize_stan_run'
+                if os.path.exists(fname0):
+                    os.unlink(fname0)
+                    break
             time.sleep(interval)
+        self.print_status()
+        self._run.finalize()
+        self.print_status()
     def print_status(self):
-        total_lines_processed = sum([x.num_lines_processed() for x in self._output_csv_files.values()])
+        total_lines_processed = sum([x.num_lines_processed for x in self._output_csv_files.values()])
         print(f'{total_lines_processed} lines processed in {len(self._output_csv_files.values())} files')
     def iterate(self):
         if not os.path.exists(self._output_dir):
@@ -102,18 +113,19 @@ class OutputMonitor:
                     chain_id = _chain_id_from_csv_file_name(fname)
                     chain = self._run.add_chain(chain_id)
                     self._output_csv_files[fname] = OutputCsvFile(csv_path=f'{self._output_dir}/{fname}', chain=chain, parameter_names=self._parameter_names)
-        something_updated = False
+        something_incomplete = False
         for fname in list(self._output_csv_files.keys()):
             x = self._output_csv_files[fname]
             if os.path.exists(x.csv_path):
-                if x.iterate():
-                    something_updated = True
+                x.iterate()
+                if not x.complete:
+                    something_incomplete = True
             else:
                 print(f'Closing {fname}')
                 x.cleanup()
                 something_updated = True
                 del self._output_csv_files[fname]
-        return something_updated
+        return something_incomplete
 
 
 def _start_monitoring(run: MCMCRun, output_dir: str, parameter_names: List[str]):

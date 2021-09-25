@@ -5,18 +5,23 @@ import time
 
 
 class MCMCIteration:
-    def __init__(self, parameters: dict) -> None:
+    def __init__(self, iter_num: int, parameters: dict) -> None:
+        self._iter_num = iter_num
         self._parameters = parameters
         self._timestamp = time.time()
     @property
     def parameters(self):
         return self._parameters
     @property
+    def iter_num(self):
+        return self._iter_num
+    @property
     def timestamp(self):
         return self._timestamp
     def to_dict(self):
         return {
             'timestamp': self._timestamp,
+            'iter_num': self._iter_num,
             'parameters': self._parameters
         }
 
@@ -42,7 +47,7 @@ class MCMCChain:
             f = self._feed
         return f.load_subfeed('main')
     def add_iteration(self, parameters: dict):
-        x = MCMCIteration(parameters)
+        x = MCMCIteration(len(self._iterations), parameters)
         self._iterations.append(x)
         self._pending_iterations.append(x)
         self.iterate()

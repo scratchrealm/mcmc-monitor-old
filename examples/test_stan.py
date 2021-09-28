@@ -7,7 +7,7 @@ def main():
     # These are adjustable parameters
     rho = 0.998 # rho should be <1. Larger values make correspond to longer iterations.
     N = 200
-    iter_warmup = 10 # Number of warmup iterations
+    iter_warmup = 20 # Number of warmup iterations
     iter_sampling = 200 # Number of sampling iterations
     ##################################
 
@@ -32,7 +32,7 @@ def main():
             output_dir=monitor._output_dir,
             iter_sampling=iter_sampling,
             iter_warmup=iter_warmup,
-            save_warmup=False
+            save_warmup=True
         )
 
 if __name__ == '__main__':

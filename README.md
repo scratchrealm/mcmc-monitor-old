@@ -21,7 +21,7 @@ export FIGURL_CHANNEL=<name-of-your-kachery-channel>
 
 ### Installing cmdstan and cmdstanpy
 
-To install cmdstan and cmdstanpy:
+To install cmdstan and cmdstanpy (within your conda environment):
 
 ```bash
 pip install cmdstanpy
@@ -39,7 +39,7 @@ Once your kachery node is up and running and you have the FIGURL_CHANNEL environ
 pip install --upgrade mcmc-monitor
 ```
 
-To get started, try out [test_stan.py](./examples/test_stan.py). Note that the [multi-normal.stan](./examples/multi-normal.stan) file needs to be next next to this `.py` file. This will begin a multi-chain Stan run and will print out a link you can use to monitor the run in a web browser. You can also share that same link with others.
+To get started, try out [test_stan.py](./examples/test_stan.py). Note that the [multi-normal.stan](./examples/multi-normal.stan) file needs to be next next to this `.py` file, so it is recommended that you clone this repo. This will begin a multi-chain Stan run and will print out a link you can use to monitor the run in a web browser. You can also share that same link with others.
 
 The integration with cmdstanpy is accomplished using a context manager as follows:
 
@@ -65,7 +65,7 @@ with StanMonitor( # The stan monitor is a context manager
     )
 ```
 
-Upon opening the link in the browser you should see something like the following:
+Upon opening the link provided in the console output you should see something like the following in your browser:
 
-<img src="https://user-images.githubusercontent.com/3679296/136562536-6ede4ef1-a78c-487b-93dc-50a3057d5e97.png" width="50%" height="50%" />
+<img src="https://user-images.githubusercontent.com/3679296/136562536-6ede4ef1-a78c-487b-93dc-50a3057d5e97.png" width="70%" height="70%" />
 

@@ -40,3 +40,32 @@ pip install --upgrade mcmc-monitor
 ```
 
 To get started, try out [test_stan.py](./examples/test_stan.py). Note that the [multi-normal.stan](./examples/multi-normal.stan) file needs to be next next to this `.py` file. This will begin a multi-chain Stan run and will print out a link you can use to monitor the run in a web browser. You can also share that same link with others.
+
+The integration with cmdstanpy is accomplished using a context manager as follows:
+
+```python
+with StanMonitor( # The stan monitor is a context manager
+    label='multi-normal-example',
+    # monitor these parameters
+    parameter_names=["lp__", "accept_stat__", "stepsize__", "treedepth__", "n_leapfrog__", "divergent__", "energy__"],
+    # attach meta data (for future use)
+    meta_data={}
+) as monitor:
+    # Load the model
+    model = CmdStanModel(stan_file=model_fname)
+
+    # Start sampling the posterior for this model/data
+    # Use monitor._output_dir as the output directory
+    fit = model.sample(
+        data={'N': N, 'rho': rho},
+        output_dir=monitor._output_dir,
+        iter_sampling=iter_sampling,
+        iter_warmup=iter_warmup,
+        save_warmup=True
+    )
+```
+
+Upon opening the link in the browser you should see something like the following:
+
+<img src="https://user-images.githubusercontent.com/3679296/136562536-6ede4ef1-a78c-487b-93dc-50a3057d5e97.png" width="50%" height="50%" />
+

@@ -5,7 +5,7 @@ import os
 
 def main():
     # These are adjustable parameters
-    rho = 0.9 # rho should be <1. Larger values make correspond to longer iterations.
+    rho = 0.9 # rho should be <1
     N = 400
     iter_warmup = 20 # Number of warmup iterations
     iter_sampling = 100 # Number of sampling iterations

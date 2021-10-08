@@ -5,10 +5,10 @@ import os
 
 def main():
     # These are adjustable parameters
-    rho = 0.998 # rho should be <1. Larger values make correspond to longer iterations.
-    N = 200
+    rho = 0.9 # rho should be <1. Larger values make correspond to longer iterations.
+    N = 400
     iter_warmup = 20 # Number of warmup iterations
-    iter_sampling = 200 # Number of sampling iterations
+    iter_sampling = 100 # Number of sampling iterations
     ##################################
 
     # specify .stan file for this model

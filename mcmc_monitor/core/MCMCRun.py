@@ -2,163 +2,44 @@ from typing import List, Union
 import figurl as fig
 import kachery_client as kc
 import time
-
-
-class MCMCIteration:
-    def __init__(self, iter_num: int, parameters: dict) -> None:
-        self._iter_num = iter_num
-        self._parameters = parameters
-        self._timestamp = time.time()
-    @property
-    def parameters(self):
-        return self._parameters
-    @property
-    def iter_num(self):
-        return self._iter_num
-    @property
-    def timestamp(self):
-        return self._timestamp
-    def to_dict(self):
-        return {
-            'timestamp': self._timestamp,
-            'iter_num': self._iter_num,
-            'parameters': self._parameters
-        }
-
-class MCMCChain:
-    def __init__(self, chain_id: str) -> None:
-        self._chain_id = chain_id
-        self._timestamp = time.time()
-        self._iterations: List[MCMCIteration] = []
-        self._feed: Union[None, kc.Feed] = None
-        self._pending_iterations: List[MCMCIteration] = []
-        self._timestamp_last_report_iterations = 0
-    @property
-    def chain_id(self):
-        return self._chain_id
-    @property
-    def timestamp(self):
-        return self._timestamp
-    def get_subfeed(self) -> kc.Subfeed:
-        if self._feed is None:
-            f = self._create_feed()
-            self._feed = f
-        else:
-            f = self._feed
-        return f.load_subfeed('main')
-    def add_iteration(self, parameters: dict):
-        x = MCMCIteration(len(self._iterations), parameters)
-        self._iterations.append(x)
-        self._pending_iterations.append(x)
-        self.iterate()
-        return x
-    def iterate(self):
-        if self._feed is None:
-            return
-        if len(self._pending_iterations) == 0:
-            return
-        elapsed = time.time() - self._timestamp_last_report_iterations
-        if elapsed >= 5:
-            self._report_pending_iterations()
-    def finalize(self):
-        if (self._feed is not None) and (len(self._pending_iterations) > 0):
-            self._report_pending_iterations()
-    def to_dict(self):
-        return {
-            'chainId': self._chain_id,
-            'timestamp': self._timestamp,
-            'iterations': [it.to_dict() for it in self._iterations]
-        }
-    def _create_feed(self):
-        f: kc.Feed = kc.create_feed()
-        self._report_pending_iterations()
-        return f
-    def _get_add_iterations_message(self, iterations: List[MCMCIteration]):
-        return {
-            'type': 'AddIterations',
-            'iterations': [it.to_dict() for it in iterations]
-        }
-    def _report_pending_iterations(self):
-        if self._feed is None:
-            return
-        if len(self._pending_iterations) == 0:
-            return
-        sf = self.get_subfeed()
-        sf.append_message(self._get_add_iterations_message(self._pending_iterations))
-        self._pending_iterations = []
-        self._timestamp_last_report_iterations = time.time()
-
 class MCMCRun:
-    def __init__(self, run_id: str, *, label: str, meta_data: dict) -> None:
-        self._run_id = run_id
+    def __init__(self, *, label: str) -> None:
         self._label = label
-        self._meta_data = meta_data
         self._timestamp = time.time()
-        self._chains: List[MCMCChain] = []
+        self._records: List[dict] = []
         self._feed: Union[None, kc.Feed] = None
-    @property
-    def run_id(self):
-        return self._chain_id
+        self._subfeed: Union[None, kc.Subfeed] = None
+        self._pending_records: List[dict] = []
+        self._last_write_timestamp = time.time()
     @property
     def label(self):
         return self._label
     @property
-    def meta_data(self):
-        return self._meta_data
-    @property
     def timestamp(self):
         return self._timestamp
-    def add_chain(self, chain_id: str):
-        x = MCMCChain(chain_id)
-        self._chains.append(x)
-        if self._feed is not None:
-            self.get_subfeed().append_message(
-                self._get_append_chain_message(x)
-            )
-        return x
+    def add_record(self, record: dict):
+        self._pending_records.append(record)
+        elapsed = time.time() - self._last_write_timestamp
+        if (elapsed > 5) or (len(self._pending_records) >= 20):
+            self._write_pending_records()
+    def _write_pending_records(self):
+        if len(self._pending_records) == 0:
+            return
+        self.get_subfeed().append_message({'records': self._pending_records})
+        self._pending_records = []
+        self._last_write_timestamp = time.time()
     def finalize(self):
-        for c in self._chains:
-            c.finalize()
-    def iterate(self):
-        for c in self._chains:
-            c.iterate()
-    def to_dict(self):
-        return {
-            'runId': self._run_id,
-            'runLabel': self._label,
-            'metaData': self._meta_data,
-            'timestamp': self._timestamp,
-            'chains': [c.to_dict() for c in self._chains]
-        }
+        self._write_pending_records()
     def get_subfeed(self) -> kc.Subfeed:
-        if self._feed is None:
-            f = self._create_feed()
+        if self._subfeed is None:
+            f = kc.create_feed()
             self._feed = f
-        else:
-            f = self._feed
-        return f.load_subfeed('main')
-    def figurl(self, *, snapshot: bool=False):
-        if snapshot:
-            run_uri = kc.store_json(self.to_dict())
-        else:
-            subfeed = self.get_subfeed()
-            run_uri = subfeed.uri
-        return fig.Figure(type='mcmc-monitor.mcmc-run-view.1', data={'runUri': run_uri, 'runId': self._run_id, 'runLabel': self._label, 'timestamp': self._timestamp})
-    def _create_feed(self):
-        f: kc.Feed = kc.create_feed()
-        sf = f.load_subfeed('main')
-        sf.append_message({
-            'type': 'SetMetaData',
-            'metaData': self._meta_data
-        })
-        for c in self._chains:
-            sf.append_message(self._get_append_chain_message(c))
-        self.iterate()
-        return f
-    def _get_append_chain_message(self, c: MCMCChain):
-        return {
-            'type': 'AddChain',
-            'chainId': c.chain_id,
-            'timestamp': c.timestamp,
-            'chainUri': c.get_subfeed().uri
+            self._subfeed = f.load_subfeed('main')
+        return self._subfeed
+    def figurl(self):
+        data = {
+            'type': 'mcmcRun',
+            'runUri': self.get_subfeed().uri,
+            'runLabel': self._label
         }
+        return fig.Figure(view_url='gs://figurl/mcmc-monitor-1', data=data)

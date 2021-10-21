@@ -18,9 +18,7 @@ def main():
     with StanMonitor( # The stan monitor is a context manager
         label='multi-normal-example',
         # monitor these parameters
-        parameter_names=["lp__", "accept_stat__", "stepsize__", "treedepth__", "n_leapfrog__", "divergent__", "energy__"],
-        # attach meta data (for future use)
-        meta_data={}
+        parameter_names=["lp__", "accept_stat__", "stepsize__", "treedepth__", "n_leapfrog__", "divergent__", "energy__"]
     ) as monitor:
         # Load the model
         model = CmdStanModel(stan_file=model_fname)

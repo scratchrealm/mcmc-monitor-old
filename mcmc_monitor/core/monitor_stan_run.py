@@ -1,4 +1,4 @@
-from .MCMCRun import MCMCChain, MCMCRun
+from .MCMCRun import MCMCRun
 import multiprocessing
 import kachery_client as kc
 import os
@@ -11,6 +11,7 @@ def monitor_stan_run(*, run: MCMCRun, stan_output_dir: str, parameter_names: Lis
 def finalize_monitor_stan_run(output_dir):
     fname = f'{output_dir}/finalize_stan_run'
     time.sleep(3)
+    # Write a file. When it disappears, we know we are done.
     with open(fname, 'w') as f:
         f.write('Finalizing monitoring of stan run')
     # wait until file disappears
@@ -22,10 +23,12 @@ import time
 from typing import Dict, List
 
 class OutputCsvFile:
-    def __init__(self, *, csv_path: str, chain: MCMCChain, parameter_names: List[str]):
+    def __init__(self, *, csv_path: str, run: MCMCRun, chain_id: int, parameter_names: List[str]):
         self._csv_path = csv_path
         self._parameter_names = parameter_names
-        self._chain = chain
+        self._run = run
+        self._chain_id = chain_id
+        self._iter_num = 0
         self._file = open(self._csv_path, 'r')
         self._num_lines_processed = 0
         self._header_fields = None
@@ -58,12 +61,17 @@ class OutputCsvFile:
                 if self._header_fields is None:
                     self._header_fields = vals
                 else:
-                    parameters = {}
+                    parameters = {
+                        'chain_id': self._chain_id,
+                        'iter_num': self._iter_num,
+                        'timestamp': time.time()
+                    }
                     for ii, k in enumerate(self._header_fields):
                         if ii < len(vals):
                             if (k in self._parameter_names):
                                 parameters[k] = float(vals[ii])
-                    self._chain.add_iteration(parameters)
+                    self._iter_num = self._iter_num + 1
+                    self._run.add_record(parameters)
 
 def _chain_id_from_csv_file_name(path: str):
     # should end with '-<id>.csv'
@@ -111,8 +119,7 @@ class OutputMonitor:
             if fname.endswith('.csv'):
                 if fname not in self._output_csv_files:
                     chain_id = _chain_id_from_csv_file_name(fname)
-                    chain = self._run.add_chain(chain_id)
-                    self._output_csv_files[fname] = OutputCsvFile(csv_path=f'{self._output_dir}/{fname}', chain=chain, parameter_names=self._parameter_names)
+                    self._output_csv_files[fname] = OutputCsvFile(csv_path=f'{self._output_dir}/{fname}', run=self._run, chain_id=chain_id, parameter_names=self._parameter_names)
         something_incomplete = False
         for fname in list(self._output_csv_files.keys()):
             x = self._output_csv_files[fname]

@@ -65,5 +65,6 @@ with StanMonitor( # The stan monitor is a context manager
 
 Upon opening the link provided in the console output you should see something like the following in your browser:
 
-<img src="https://user-images.githubusercontent.com/3679296/136562536-6ede4ef1-a78c-487b-93dc-50a3057d5e97.png" width="70%" height="70%" />
+<img src="https://user-images.githubusercontent.com/3679296/138281405-7e155f53-550b-4860-bdfa-f95e0f93cb22.png" width="70%" height="70%" />
+
 

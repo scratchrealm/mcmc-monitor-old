@@ -24,9 +24,10 @@ export FIGURL_CHANNEL=<name-of-your-kachery-channel>
 To install cmdstan and cmdstanpy (within your conda environment):
 
 ```bash
-pip install cmdstanpy
-install_cmdstan
+conda install -c conda-forge cmdstan cmdstanpy
 ```
+
+**Important**: You must reopen your terminal after running this install command, or reactivate the conda environment. This is necessary so that the $CMDSTAN environment variable is set properly.
 
 For more information see the [cmdstanpy documentation](https://mc-stan.org/cmdstanpy/).
 
@@ -68,3 +69,19 @@ Upon opening the link provided in the console output you should see something li
 <img src="https://user-images.githubusercontent.com/3679296/138281405-7e155f53-550b-4860-bdfa-f95e0f93cb22.png" width="70%" height="70%" />
 
 Live view: https://www.figurl.org/f?v=gs://figurl/mcmc-monitor-1&d=9bebdacf6b9cfc2c7f62ea47a804bf875016549b&channel=flatiron1&label=multi-normal-example
+
+## Command-line usage
+
+It is also possible to monitor Stan runs from the command line without using Python:
+
+```bash
+mcmc-monitor-stan <directory> --label <label>
+```
+
+Here `<directory>` is the output directory of the stan run, and `<label>` is a string for display purposes.
+
+## Authors
+
+Jeremy Magland and Jeff Soules
+
+Center for Computational Mathematics, Flatiron Institute

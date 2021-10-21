@@ -3,4 +3,4 @@
 import mcmc_monitor
 
 if __name__ == '__main__':
-    mcmc_monitor.start_backend_cli()
+    mcmc_monitor.mcmc_monitor_stan_cli()

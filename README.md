@@ -67,4 +67,4 @@ Upon opening the link provided in the console output you should see something li
 
 <img src="https://user-images.githubusercontent.com/3679296/138281405-7e155f53-550b-4860-bdfa-f95e0f93cb22.png" width="70%" height="70%" />
 
-
+Live view: https://www.figurl.org/f?v=gs://figurl/mcmc-monitor-1&d=9bebdacf6b9cfc2c7f62ea47a804bf875016549b&channel=flatiron1&label=multi-normal-example
